@@ -1,12 +1,20 @@
 Package: PDSIR
-Title: Piece-wise Decoupled SIR Process
-Version: 0.0.0.9000
-Authors@R: 
+Title: An implementation of the piece-wise decoupled SIR process
+Version: 0.0.0.9001
+Authors@R: c(
     person(given = "Raphael",
            family = "Morsomme",
            role = c("aut", "cre"),
-           email = "rnm16@duke.edu")
-Description: Efficient DA-MCMC algorithm for conducting inference on the stochastic SIR model with incidence data.
+           email = "raphael.morsomme@duke.edu"),
+    person(given = "Jason",
+           family = "Xu",
+           role = "ctb",
+           email = "jason.q.xu@duke.edu")
+           )
+Description: An implementation of an efficient DA-MCMC algorithm for conducting inference on the stochastic SIR model 
+    with incidence data, which uses the piece-wise decoupled SIR process as a proposal process
+    in the Metropolis-Hastings step that updates the latent data. 
+    It also provides the scripts used to run the experiments conducted in the paper "A uniformly ergodic DA-MCMC for the SIR process with incidence data".
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -20,5 +28,5 @@ Imports:
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
-URL: https://github.com/rmorsomme/PDSIR
+URL: https://github.com/rmorsomme/PDSIR, google.com
 BugReports: https://github.com/rmorsomme/PDSIR/issues

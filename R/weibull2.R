@@ -25,7 +25,9 @@ pweibull2 <- function(x, shape, rate, log.p = FALSE, lower.tail = TRUE) {
 #' @param lower lower bound
 #' @param upper upper bound
 #'
-#' @return n-length vector of random variables following the weibull distribution
+#' @family truncated weibull
+#'
+#' @return n-length vector of random variables following a truncated weibull distribution
 #' @export
 #'
 rweibull2_trunc <- function(n, shape, rate, lower, upper) {
@@ -68,7 +70,9 @@ dweibull2 <- function(x, shape, rate, log = FALSE) {
 #' @param shape shape parameter
 #' @param rate rate parameter
 #' @param lower lower bound
-#' @param upper uppaer bound
+#' @param upper upper bound
+#'
+#' @family truncated weibull
 #'
 #' @return vector of densities
 #' @export

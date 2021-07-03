@@ -21,3 +21,8 @@ log density
 \description{
 Log density of the truncated exponential distribution
 }
+\seealso{
+Other truncated exponential: 
+\code{\link{rexp_trunc}()}
+}
+\concept{truncated exponential}

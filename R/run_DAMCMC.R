@@ -22,8 +22,7 @@ run_DAMCMC <- function(
   parameterization = "bR",
   generalized = FALSE, b = 1/2,
   print_i = FALSE, save_SS = FALSE
-) {
-
+  ) {
 
   # Setup
   SS_save <- x_save <- theta_save <- vector(mode = "list", length = N / thin)

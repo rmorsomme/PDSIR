@@ -18,8 +18,13 @@ rweibull2_trunc(n, shape, rate, lower, upper)
 \item{upper}{upper bound}
 }
 \value{
-n-length vector of random variables following the weibull distribution
+n-length vector of random variables following a truncated weibull distribution
 }
 \description{
 Random generator for the truncated weibull distribution
 }
+\seealso{
+Other truncated weibull: 
+\code{\link{dweibull2_trunc_log}()}
+}
+\concept{truncated weibull}

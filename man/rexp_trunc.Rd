@@ -28,3 +28,8 @@ main = "Truncated exponential distribution", xlab = NULL
 )
 
 }
+\seealso{
+Other truncated exponential: 
+\code{\link{dexp_trunc_log}()}
+}
+\concept{truncated exponential}

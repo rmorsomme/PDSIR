@@ -27,7 +27,8 @@ observed_data <- function(SEM, K = 10, ts = NULL, type = "SIR") {
   if(type == "SEIR") F_k <- compute_Fk(x, ts = ts)
 
   # Output
-  out <- list(T_k = T_k, F_k = F_k, I0 = I0, S0 = S0, ts = ts, t_end = t_end)
+  out <- list(T_k = T_k, I0 = I0, S0 = S0, ts = ts, t_end = t_end)
+  if(type == "SEIR") out[["F_k"]] <- F_k
   return(out)
 
 }

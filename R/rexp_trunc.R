@@ -1,5 +1,5 @@
+
 #' Random generator for the truncated exponential distribution
-#'
 #'
 #' Generates random values from a truncated exponential distribution
 #'
@@ -7,6 +7,8 @@
 #' @param lambda positive double
 #' @param lower positive double
 #' @param upper positive double
+#'
+#' @family truncated exponential
 #'
 #' @return positive double
 #' @export

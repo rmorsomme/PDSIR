@@ -1,12 +1,12 @@
 
-
-#
 #' Log density of the truncated exponential distribution
 #'
 #' @param x vector
 #' @param lambda rate of exponential distribution
 #' @param lower lower bound
 #' @param upper upper bound
+#'
+#' @family truncated exponential
 #'
 #' @return log density
 #' @export

@@ -7,10 +7,10 @@
 experiment_1_proof_of_concept(
   S0 = 1000,
   I0 = 10,
-  theta = list(R0 = 2, gamma = 1),
+  theta = list(R0 = 2.5, gamma = 1),
   t_end = 6,
   K = 10,
-  N = 1e+05,
+  N = 10000,
   thin = 1,
   rho = 1/5,
   theta_0_factor_beta = 0.1,

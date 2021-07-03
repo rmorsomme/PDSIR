@@ -15,7 +15,7 @@ propose_tau_T(n, mu, lower, upper, approximation)
 
 \item{upper}{upper bound}
 
-\item{approximation}{c("poisson", "lbd"); whether to approximate the distribution of the infection times with a poisson process or a linear death process}
+\item{approximation}{c("poisson", "pld"); whether to approximate the distribution of the infection times with a poisson process or a linear death process}
 }
 \value{
 infection times

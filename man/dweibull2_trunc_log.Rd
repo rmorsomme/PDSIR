@@ -15,7 +15,7 @@ dweibull2_trunc_log(x, shape, rate, lower, upper)
 
 \item{lower}{lower bound}
 
-\item{upper}{uppaer bound}
+\item{upper}{upper bound}
 }
 \value{
 vector of densities
@@ -23,3 +23,8 @@ vector of densities
 \description{
 Log density of the truncated Weibull distribution
 }
+\seealso{
+Other truncated weibull: 
+\code{\link{rweibull2_trunc}()}
+}
+\concept{truncated weibull}

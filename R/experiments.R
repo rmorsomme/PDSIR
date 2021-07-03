@@ -16,9 +16,9 @@
 #' @export
 #'
 experiment_1_proof_of_concept <- function(
-  S0 = 1e3, I0 = 1e1, theta = list(R0 = 2, gamma = 1),
+  S0 = 1e3, I0 = 1e1, theta = list(R0 = 2.5, gamma = 1),
   t_end = 6, K = 10,
-  N = 1e5, thin = 1,
+  N = 1e4, thin = 1,
   rho = 1/5,
   theta_0_factor_beta = 0.1, theta_0_factor_gamma = 0.1
   ) {
@@ -27,13 +27,13 @@ experiment_1_proof_of_concept <- function(
   R0    <- theta[["R0"   ]]
   beta  <- R0 / gamma / S0
 
-  SIR  <- simulate_SIR(S0, I0, beta, gamma, t_end)
+  SIR  <- simulate_SIR(S0, I0, theta, t_end)
   Y    <- observed_data(SIR, K)
 
   # run a long chain
   t0 <- Sys.time()
   MC <- run_DAMCMC(
-    Y, rho, N, thin, parameterization = "bR",
+    Y, rho, N, thin,
       theta_0 = list(
         beta  = theta_0_factor_beta  * beta ,
         gamma = theta_0_factor_gamma * gamma,
@@ -43,5 +43,43 @@ experiment_1_proof_of_concept <- function(
     run_time <- Sys.time() - t0
 
   return(list(theta = theta, Y = Y, MC = MC, run_time = run_time))
+
+}
+
+
+
+#' Analyze output of MCMC run
+#'
+#' @param x object returned by the function experiment_1_proof_of_concept
+#' @param plot_id name file for the figures
+#' @param burnin number of iterations to discard, the default value NULL will discard half of the draws.
+#' @param path directory in which to save the figure
+#'
+#' @return list of summary statistics with and without burnin
+#' @export
+#'
+experiment_1_output_analysis <- function(x, plot_id, path = NULL, burnin = NULL) {
+
+  theta <- x    [["theta"]]
+  Y     <- x    [["Y"    ]]
+  MC    <- x    [["MC"   ]]
+  gamma <- theta[["gamma"]]
+  beta  <- theta[["beta" ]]
+
+  summary_no_burn <- analyze_MCMC(
+    MC, burnin = 0,
+    beta_true = beta, gamma_true = gamma,
+    plot_id = paste0(plot_id, "_no_burn"), path = path
+  )
+
+  if(is.null(burnin))  burnin <- length(MC[["theta"]])/2
+  summary_burn <- analyze_MCMC(
+    MC, burnin = burnin,
+    beta_true = beta, gamma_true = gamma,
+    plot_id = paste0(plot_id, "_burn"), path = path
+  )
+
+  out <- list(summary_no_burn = summary_no_burn, summary_burn = summary_burn)
+  return(out)
 
 }

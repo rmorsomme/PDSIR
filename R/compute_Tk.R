@@ -1,17 +1,16 @@
 
-#' Discrete Incidence Data for Infections
+#' Discrete incidence counts for infections
 #'
-#' Compute the number of infections in each time interval from the output of a MCMC
+#' Compute the number of infections in each observation interval
 #'
 #' @param x vector of infection times
 #' @param ts observation schedule
-#' @param S0 initial population of susceptibles
 #'
 #' @return a vector of the number of infections in each time interval
 #' @export
 #'
 #'
-compute_Tk <- function(x, ts, S0) {
+compute_Tk <- function(x, ts) {
 
   tau_T <- x[["tau_T"]]
   tau_T <- tau_T[is.finite(tau_T) & tau_T > 0] # exclude infinite values and zeros
@@ -31,14 +30,12 @@ compute_Tk <- function(x, ts, S0) {
 
 #' Discrete Incidence Data for Infections (Fast)
 #'
-#' @param x vector of infection times
-#' @param ts observation schedule
-#' @param S0 initial population of susceptibles
+#' @inheritParams compute_Tk
 #'
 #' @return a vector of the number of infections in each time interval
 #' @export
 #'
-compute_Tk_MH_fast <- function(x, ts, S0) {
+compute_Tk_MH_fast <- function(x, ts) {
 
   tau_T <- x[["tau_T"]]
 

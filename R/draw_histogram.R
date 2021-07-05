@@ -1,11 +1,9 @@
 
 #' Generates a histogram
 #'
-#' @param df data frame
-#' @param var variable under consideration
-#' @param plot_id name file for the figure
+#' @inheritParams draw_traceplot
+#'
 #' @param bins number of bins in the histogram
-#' @param path directory in which to save the figure
 #'
 #' @return a histogram
 #' @export

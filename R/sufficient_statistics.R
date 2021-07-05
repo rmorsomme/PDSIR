@@ -3,21 +3,19 @@
 #'
 #' These sufficient statistics are used to conduct inference on the parameters
 #'
-#' @param x latent data
-#' @param Y observed data
-#' @param generalized logical; whether to use the generalized SIR
-#' @param b parameter of the generalized SIR
+#' @inheritParams rprop_x
+#'
 #' @param return_SI logical; whether to return the trajectories of S and I
 #'
 #' @return sufficient statistics
 #' @export
 #'
-sufficient_statistics <- function(x, Y, generalized, b, return_SI = FALSE) {
+suff_stat <- function(x, Y, gener, b, return_SI = FALSE) {
+
+  stopifnot(is.logical(gener), is.numeric(b), b > 0, is.logical(return_SI))
 
   # Verify compatibility of x
-  if(!x[["compatible"]]) {
-    return(list(compatible = FALSE))
-  }
+  if(!x[["compatible"]])  return(list(compatible = FALSE))
 
   # Setup
   tau_T <- x[["tau_T"]]
@@ -40,9 +38,7 @@ sufficient_statistics <- function(x, Y, generalized, b, return_SI = FALSE) {
   # Iota
   iota_recovered  <- tau_J[recovered] - tau_T[recovered]
   iota_infectious <- t_end            - tau_T[infectious]
-  if(any(iota_recovered < 1e-12)) { # may happen that iota_recovered == 0 when rexp() produces 0
-    return(list(compatible = FALSE))
-  }
+  if(any(iota_recovered < 1e-12))  return(list(compatible = FALSE))
 
   # Event time
   tau_T     <- tau_T[infected_during]
@@ -50,33 +46,29 @@ sufficient_statistics <- function(x, Y, generalized, b, return_SI = FALSE) {
   tau       <- c(tau_T, tau_J)
   order_tau <- order(tau)
 
-  # S(tau), I(tau), I(tau_T)
+  # Compute S(tau), I(tau), I(tau_T)
   chi     <- c(rep(TRUE, n_T), rep(FALSE, n_J))[order_tau] # type of event (TRUE: infection, FALSE: recovery) # Sanity check: all.equal(X=="t", chi)
 
   delta_I <- ifelse(chi,  1, -1) # change in I
   delta_S <- ifelse(chi, -1,  0) # change in S
 
-  I_tau   <- c(I0, I0 + cumsum(delta_I)) # Sanity check: all.equal(I, I_tau)
+  I_tau   <- c(I0, I0 + cumsum(delta_I))
   S_tau   <- c(S0, S0 + cumsum(delta_S))
-  I_tau_T <- I_tau[c(  chi, FALSE)] # include `FALSE` to exclude last element which corresponds to I(t_end) # all.equal(I_tau_t_true, I_tau_T)
-  S_tau_T <- S_tau[c(  chi, FALSE)] # include `FALSE` to exclude last element which corresponds to I(t_end) # all.equal(I_tau_t_true, I_tau_T)
+  I_tau_T <- I_tau[c(  chi, FALSE)] # include `FALSE` to exclude last element which corresponds to I(t_end)
+  S_tau_T <- S_tau[c(  chi, FALSE)]
 
-  if(any(I_tau_T == 0)) { # incompatible data
-    return(list(compatible = FALSE))
-  }
+  if(any(I_tau_T == 0))  return(list(compatible = FALSE)) # depletion of infectious particles
 
   # Compute integrals
-  tau         <- tau[order_tau]         # times of event in order
-  dtau        <- diff(c(0, tau, t_end)) # time between events # Sanity check: dtau - W
+  tau         <- tau[order_tau]
+  dtau        <- diff(c(0, tau, t_end))
 
-  integral_SI <- if(generalized)  sum(dtau * I_tau * S_tau^(1 - b)) # integral of step function
-  else             sum(dtau * I_tau * S_tau        )
+  integral_SI <- if(gener)  sum(dtau * I_tau * S_tau^(1 - b))
+                 else       sum(dtau * I_tau * S_tau        )
   integral_I  <- sum(dtau * I_tau)
 
   # Output
-  if(return_SI) { # for plotting latent space
-    return(list(S = S_tau, I = I_tau, t = c(0, tau)))
-  }
+  if(return_SI)  return(list(S = S_tau, I = I_tau, t = c(0, tau))) # for plotting trajectories
 
   SS <- list( # for MCMC
     compatible = TRUE,

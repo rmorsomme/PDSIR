@@ -1,12 +1,11 @@
 
 #' Generates a bi-dimensional density plot
 #'
-#' @param df data frame
+#' @inheritParams draw_traceplot
+#'
 #' @param var1 variable to plot on the x-axis
 #' @param var2 variable to plot on the y-axis
-#' @param plot_id name file for the figure
 #' @param xlim vector of length 2; limits on the x-axis
-#' @param path directory in which to save the figure
 #'
 #' @return a figure of a biavriate density
 #' @export

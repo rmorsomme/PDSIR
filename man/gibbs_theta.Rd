@@ -4,7 +4,7 @@
 \alias{gibbs_theta}
 \title{Gibbs sampler for theta}
 \usage{
-gibbs_theta(SS, par_prior, theta, parameterization, Y)
+gibbs_theta(SS, par_prior, theta, param, Y)
 }
 \arguments{
 \item{SS}{sufficient statistics}
@@ -13,7 +13,7 @@ gibbs_theta(SS, par_prior, theta, parameterization, Y)
 
 \item{theta}{parameters of the SIR process}
 
-\item{parameterization}{c("bg", "bR"); parameterize the models in terms of (beta, gamma) or (beta, R0)}
+\item{param}{c("bg", "bR"); parameterize the models in terms of (beta, gamma) or (beta, R0)}
 
 \item{Y}{observed data}
 }

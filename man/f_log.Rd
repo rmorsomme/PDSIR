@@ -4,18 +4,18 @@
 \alias{f_log}
 \title{Log likelihood of the stochastic SIR model}
 \usage{
-f_log(theta, SS, generalized, b, iota_distribution = "exponential")
+f_log(theta, SS, gener, b, iota_dist = "exponential")
 }
 \arguments{
-\item{theta}{parameters of the stochastic SIR process}
+\item{theta}{current values of the parameters for the SIR}
 
-\item{SS}{sufficient statistics of some latent data}
+\item{SS}{sufficient statistics of the current configuration of the latent data}
 
-\item{generalized}{logical; whether to use the generalized stochastic SIR process (Severo, 1969)}
+\item{gener}{logical; whether to use the generalized SIR of Severo (1972)}
 
 \item{b}{parameter of the generalized SIR}
 
-\item{iota_distribution}{c("exponential", "weibull"); distribution of the infection period}
+\item{iota_dist}{c("exponential", "weibull"); distribution of the infection period}
 }
 \value{
 log likelihood

@@ -8,7 +8,7 @@ simulate_SIR(
   S0 = 1000,
   I0 = 10,
   theta = list(R0 = 2, gamma = 1),
-  t_end,
+  t_end = 6,
   generalized = FALSE,
   b = 1/2,
   type = "SIR"

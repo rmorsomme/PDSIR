@@ -4,7 +4,7 @@
 #' @param MC output of the MCMC algorithm
 #' @param burnin number of iterations to discard
 #' @param thin thinning argument for the iterations of the Markov chain
-#' @param plot_id name file for the figures
+#' @param plot_id name file for the figure
 #' @param save_fig logical; whether to save the figures generated
 #' @param do_SS logical; whether to analyze the summary statistics in addition to the parameters
 #' @param beta_true true value of the beta parameter

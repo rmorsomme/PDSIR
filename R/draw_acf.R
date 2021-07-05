@@ -1,11 +1,9 @@
 
 #' Generate a plot of the auto-correlation function
 #'
-#' @param df data frame
-#' @param var variable under consideration
-#' @param plot_id name file for the figure
+#' @inheritParams draw_traceplot
+#'
 #' @param lag_max largest lag shown
-#' @param path directory in which to save the figure
 #'
 #' @return Barplot of the ACF
 #' @export

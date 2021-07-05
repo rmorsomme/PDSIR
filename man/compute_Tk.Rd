@@ -2,20 +2,18 @@
 % Please edit documentation in R/compute_Tk.R
 \name{compute_Tk}
 \alias{compute_Tk}
-\title{Discrete Incidence Data for Infections}
+\title{Discrete incidence counts for infections}
 \usage{
-compute_Tk(x, ts, S0)
+compute_Tk(x, ts)
 }
 \arguments{
 \item{x}{vector of infection times}
 
 \item{ts}{observation schedule}
-
-\item{S0}{initial population of susceptibles}
 }
 \value{
 a vector of the number of infections in each time interval
 }
 \description{
-Compute the number of infections in each time interval from the output of a MCMC
+Compute the number of infections in each observation interval
 }

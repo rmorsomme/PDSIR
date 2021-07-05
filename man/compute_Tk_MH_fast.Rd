@@ -4,14 +4,12 @@
 \alias{compute_Tk_MH_fast}
 \title{Discrete Incidence Data for Infections (Fast)}
 \usage{
-compute_Tk_MH_fast(x, ts, S0)
+compute_Tk_MH_fast(x, ts)
 }
 \arguments{
 \item{x}{vector of infection times}
 
 \item{ts}{observation schedule}
-
-\item{S0}{initial population of susceptibles}
 }
 \value{
 a vector of the number of infections in each time interval

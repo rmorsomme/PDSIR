@@ -3,10 +3,10 @@
 #'
 #' Generates random values from a truncated exponential distribution
 #'
-#' @param n integer
-#' @param lambda positive double
-#' @param lower positive double
-#' @param upper positive double
+#' @inheritParams propose_tau_T
+#'
+#' @param n number of random values to generates
+#' @param lambda rate parameter
 #'
 #' @family truncated exponential
 #'
@@ -27,5 +27,28 @@ rexp_trunc <- function(n, lambda, lower, upper){ # Random Generator
   U     <- stats::runif(n)
   X     <- - log(shift - U * const) / lambda
   return(X)
+
+}
+
+
+#' Log density of the truncated exponential distribution
+#'
+#' @inheritParams rexp_trunc
+#'
+#' @param x vector
+#'
+#' @family truncated exponential
+#'
+#' @return log density
+#' @export
+#'
+dexp_trunc_log <- function(x, lambda, lower, upper){
+
+  stopifnot(all(lower <= x), all(x <= upper))
+
+  const  <- exp(- lambda * lower) - exp(- lambda * upper)
+  loglik <- log(lambda) - lambda * x - log(const)
+
+  return(loglik)
 
 }

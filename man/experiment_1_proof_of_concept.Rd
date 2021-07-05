@@ -12,9 +12,16 @@ experiment_1_proof_of_concept(
   K = 10,
   N = 10000,
   thin = 1,
-  rho = 1/5,
-  theta_0_factor_beta = 0.1,
-  theta_0_factor_gamma = 0.1
+  rho = 1,
+  param = "bg",
+  approx = "ldp",
+  iota_dist = "exponential",
+  gener = FALSE,
+  b = 1/2,
+  theta_0_factor_beta = 1,
+  theta_0_factor_gamma = 1,
+  par_prior = list(a_beta = 0.1, b_beta = 1, a_gamma = 1, b_gamma = 1, a_R0 = 2, b_R0 =
+    0.002)
 )
 }
 \arguments{
@@ -34,9 +41,21 @@ experiment_1_proof_of_concept(
 
 \item{rho}{proportion of the latent data updated each iteration}
 
+\item{param}{c("bg", "bR"); parameterize the models in terms of (beta, gamma) or (beta, R0)}
+
+\item{approx}{c("poisson", "ldp"); whether to approximate the distribution of the infection times with a poisson process or a linear death process}
+
+\item{iota_dist}{c("exponential", "weibull"); distribution of the infection period}
+
+\item{gener}{logical; whether to use the generalized SIR of Severo (1972)}
+
+\item{b}{parameter of the generalized SIR}
+
 \item{theta_0_factor_beta}{factor by which the true value of beta is multiplied to determine the starting point of the Markov chain}
 
 \item{theta_0_factor_gamma}{factor by which the true value of beta is multiplied to determine the starting point of the Markov chain}
+
+\item{par_prior}{parameters of the prior distribution}
 }
 \value{
 list containing the parameters, observed data, Markov chain and run time of the algorithm

@@ -2,25 +2,19 @@
 
 #' Generates PD-SIR process conditionally on the observed data
 #'
-#' @param theta parameters for the SIR
-#' @param Y observed data
-#' @param generalized logical; whether to use the generalized SIR
-#' @param b parameter of the generalized SIR
-#' @param x current configuration of the latent data
-#' @param rho proportion of the latent being updated
-#' @param iota_distribution c("exponential", "weibull"); distribution of the infection period
-#' @param approximation c("poisson", "lbd"); whether to approximate the distribution of the infection times with a poisson process or a linear death process
+#' @inheritParams run_DAMCMC
+#'
+#' @param theta current values of the parameters for the SIR
+#' @param x     current configuration of the latent data
 #'
 #' @return latent data for the SIR
 #' @export
 #'
 rprop_x <- function(
   theta, Y,
-  generalized, b,
-  x = NULL, rho = 1,
-  iota_distribution = "exponential", # "weibull"
-  approximation     = "pld" # "poisson"
-) {
+  gener, b, iota_dist, approx,
+  x = NULL, rho = 1
+  ) {
 
   # Setup
 
@@ -54,7 +48,7 @@ rprop_x <- function(
 
   # Indices of Updates
   i_update        <- which(as.logical(stats::rbinom(T_sum, 1, rho)))
-  tau_J[i_update] <- Inf # tau_J that are updated are Inf by default
+  tau_J[i_update] <- Inf # tau_J that are updated are set to Inf by default
 
   # Initially Infectious
   I_k[1]     <- I0
@@ -67,14 +61,14 @@ rprop_x <- function(
     tau_T[i_k_update] <- 0
 
     # Compute p_i
-    p_i[i_k_update] <- compute_pi(theta, tau_T[i_k_update], iota_distribution, t_end = t_end)
+    p_i[i_k_update] <- compute_pi(theta, tau_T[i_k_update], iota_dist, t_end)
 
     # Sample particles recovering before t_end
     is_obs    <- as.logical(stats::rbinom(n_k_update, 1, p_i[i_k_update]))
     tau_J_obs <- i_k_update[is_obs] # indices of particles recovering before t_end
 
     # Propose tau_J (the tau_J not updated are Inf by default)
-    tau_J[tau_J_obs] <- propose_tau_J(theta, tau_T[tau_J_obs], iota_distribution, t_end = t_end)
+    tau_J[tau_J_obs] <- propose_tau_J(theta, tau_T[tau_J_obs], iota_dist, t_end)
 
   }
 
@@ -96,21 +90,15 @@ rprop_x <- function(
       if(n_k_update > 0) {
 
         # Propose tau_T
-        mu_k[k]  <- if(generalized)  beta * I_k[k] * S_k[k]^(-b)  else  beta * I_k[k]
+        mu_k[k]  <- if(gener)  beta * I_k[k] * S_k[k]^(-b)  else  beta * I_k[k]
 
-        tau_T[i_k_update] <- propose_tau_T(
-          n_k_update, mu_k[k], ts[k], ts[k + 1], approximation
-        )
+        tau_T[i_k_update] <- propose_tau_T(n_k_update, mu_k[k], ts[k], ts[k+1], approx)
 
         # Propose tau_J
-        p_i[i_k_update]  <- compute_pi(
-          theta, tau_T[i_k_update], iota_distribution, t_end = t_end
-        )
+        p_i[i_k_update]  <- compute_pi(theta, tau_T[i_k_update], iota_dist, t_end)
         is_obs           <- as.logical(stats::rbinom(n_k_update, 1, p_i[i_k_update])) # particles recovering before t_end
         tau_J_obs        <- i_k_update[is_obs]
-        tau_J[tau_J_obs] <- propose_tau_J(
-          theta, tau_T[tau_J_obs], iota_distribution, t_end = t_end
-        )
+        tau_J[tau_J_obs] <- propose_tau_J(theta, tau_T[tau_J_obs], iota_dist, t_end = t_end)
 
       } # end-if(n_k_update)
 

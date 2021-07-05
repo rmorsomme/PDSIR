@@ -23,7 +23,7 @@ analyze_MCMC(
 
 \item{thin}{thinning argument for the iterations of the Markov chain}
 
-\item{plot_id}{name file for the figures}
+\item{plot_id}{name file for the figure}
 
 \item{path}{directory in which to save the figure}
 

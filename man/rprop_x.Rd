@@ -4,33 +4,24 @@
 \alias{rprop_x}
 \title{Generates PD-SIR process conditionally on the observed data}
 \usage{
-rprop_x(
-  theta,
-  Y,
-  generalized,
-  b,
-  x = NULL,
-  rho = 1,
-  iota_distribution = "exponential",
-  approximation = "pld"
-)
+rprop_x(theta, Y, gener, b, iota_dist, approx, x = NULL, rho = 1)
 }
 \arguments{
-\item{theta}{parameters for the SIR}
+\item{theta}{current values of the parameters for the SIR}
 
 \item{Y}{observed data}
 
-\item{generalized}{logical; whether to use the generalized SIR}
+\item{gener}{logical; whether to use the generalized SIR of Severo (1972)}
 
 \item{b}{parameter of the generalized SIR}
 
+\item{iota_dist}{c("exponential", "weibull"); distribution of the infection period}
+
+\item{approx}{c("poisson", "ldp"); whether to approximate the distribution of the infection times with a poisson process or a linear death process}
+
 \item{x}{current configuration of the latent data}
 
-\item{rho}{proportion of the latent being updated}
-
-\item{iota_distribution}{c("exponential", "weibull"); distribution of the infection period}
-
-\item{approximation}{c("poisson", "lbd"); whether to approximate the distribution of the infection times with a poisson process or a linear death process}
+\item{rho}{proportion of the latent data updated each iteration}
 }
 \value{
 latent data for the SIR

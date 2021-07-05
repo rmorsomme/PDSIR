@@ -15,7 +15,7 @@
 #' @export
 #'
 simulate_SIR <- function(
-  S0 = 1e3, I0 = 1e1, theta = list(R0 = 2, gamma = 1), t_end,
+  S0 = 1e3, I0 = 1e1, theta = list(R0 = 2, gamma = 1), t_end = 6,
   generalized = FALSE, b = 1/2,
   type = "SIR" # "SEIR"
 ) {

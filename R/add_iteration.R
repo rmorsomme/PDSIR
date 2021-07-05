@@ -9,6 +9,9 @@
 #'
 add_iteration <- function(df) {
 
+
+  stopifnot(is.data.frame(df))
+
   n  <- nrow(df)
   df <- dplyr::mutate(df, Iteration = 1 : n)
   return(df)

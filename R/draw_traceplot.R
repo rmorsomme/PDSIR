@@ -1,10 +1,10 @@
 
 #' Draws a traceplot
 #'
+#' @inheritParams analyze_MCMC
+#'
 #' @param df data frame
 #' @param var variable under consideration
-#' @param plot_id name file for the figure
-#' @param path directory in which to save the figure
 #'
 #' @return a traceplot
 #' @export

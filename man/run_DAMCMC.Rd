@@ -6,41 +6,46 @@
 \usage{
 run_DAMCMC(
   Y,
-  rho = 1/10,
   N = 10000,
-  thin = 1,
-  theta_0,
-  par_prior = list(a_beta = 0.1, b_beta = 1, a_gamma = 1, b_gamma = 1, a_R0 = 2, b_R0 =
-    0.002),
-  parameterization = "bR",
-  generalized = FALSE,
+  rho = 1,
+  param = "bg",
+  approx = "ldp",
+  par_prior,
+  iota_dist = "exponential",
+  gener = FALSE,
   b = 1/2,
+  thin = 1,
   print_i = FALSE,
-  save_SS = FALSE
+  save_SS = FALSE,
+  theta_0
 )
 }
 \arguments{
 \item{Y}{observed data}
 
-\item{rho}{portion of the latent being updated each iteration}
-
 \item{N}{number of iterations of the Markov chain}
 
-\item{thin}{thinning argument for the Markov chain}
+\item{rho}{proportion of the latent data updated each iteration}
 
-\item{theta_0}{initial value for the parameters}
+\item{param}{c("bg", "bR"); parameterize the models in terms of (beta, gamma) or (beta, R0)}
+
+\item{approx}{c("poisson", "ldp"); whether to approximate the distribution of the infection times with a poisson process or a linear death process}
 
 \item{par_prior}{parameters of the prior distribution}
 
-\item{parameterization}{c("bg", "bR"); parameterize the models in terms of (beta, gamma) or (beta, R0)}
+\item{iota_dist}{c("exponential", "weibull"); distribution of the infection period}
 
-\item{generalized}{logical; whether to use the generalized SIR}
+\item{gener}{logical; whether to use the generalized SIR of Severo (1972)}
 
 \item{b}{parameter of the generalized SIR}
+
+\item{thin}{thinning parameter for the Markov chain}
 
 \item{print_i}{logical; whether to print the iteration}
 
 \item{save_SS}{logical; whether to save the sufficient statistics generated each iteration}
+
+\item{theta_0}{initial value for the parameters}
 }
 \value{
 list with the draws for the parameters, the log likelihood, acceptance rate and size of initial susceptible population

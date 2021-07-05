@@ -7,28 +7,26 @@
 
 #' Log likelihood of the stochastic SIR model
 #'
-#' @param theta parameters of the stochastic SIR process
-#' @param SS sufficient statistics of some latent data
-#' @param generalized logical; whether to use the generalized stochastic SIR process (Severo, 1969)
-#' @param b parameter of the generalized SIR
-#' @param iota_distribution c("exponential", "weibull"); distribution of the infection period
+#' @inheritParams rprop_x
+#'
+#' @param SS sufficient statistics of the current configuration of the latent data
 #'
 #' @return log likelihood
 #' @export
 #'
-f_log <- function(theta, SS, generalized, b, iota_distribution = "exponential") {
+f_log <- function(theta, SS, gener, b, iota_dist = "exponential") {
 
   # Setup
-  beta   <- theta[["beta" ]]
-  gamma  <- theta[["gamma"]]
-  rate   <- theta[["rate" ]]
-  shape  <- theta[["shape"]]
+  beta   <- theta[["beta"  ]]
+  gamma  <- theta[["gamma" ]]
+  rate   <- theta[["nu"    ]]
+  shape  <- theta[["lambda"]]
 
-  n_T             <- SS[["n_T"]]
-  I_tau_T         <- SS[["I_tau_T"]]
-  S_tau_T         <- SS[["S_tau_T"]]
-  integral_SI     <- SS[["integral_SI"]]
-  iota_recovered  <- SS[["iota_recovered"]]
+  n_T             <- SS[["n_T"            ]]
+  I_tau_T         <- SS[["I_tau_T"        ]]
+  S_tau_T         <- SS[["S_tau_T"        ]]
+  integral_SI     <- SS[["integral_SI"    ]]
+  iota_recovered  <- SS[["iota_recovered" ]]
   iota_infectious <- SS[["iota_infectious"]]
 
   # # Loglik
@@ -39,7 +37,7 @@ f_log <- function(theta, SS, generalized, b, iota_distribution = "exponential") 
   #   gamma * integral_I
 
   # contribution of infections
-  loglik_infec <- if(generalized){
+  loglik_infec <- if(gener){
     n_T * log(beta) + sum(log(I_tau_T) - b * log(S_tau_T)) - beta  * integral_SI
   } else {
     n_T * log(beta) + sum(log(I_tau_T)                   ) - beta  * integral_SI
@@ -47,10 +45,10 @@ f_log <- function(theta, SS, generalized, b, iota_distribution = "exponential") 
 
   # contribution of removals
   loglik_remov <-
-    if(iota_distribution == "exponential") {
+    if(iota_dist == "exponential") {
       sum(stats::dexp(iota_recovered , gamma      , log   = TRUE                    )) + # removals before t_end (observed)
-      sum(stats::pexp(iota_infectious, gamma      , log.p = TRUE, lower.tail = FALSE))   # removals after t_end
-    } else if(iota_distribution == "weibull") {
+      sum(stats::pexp(iota_infectious, gamma      , log.p = TRUE, lower.tail = FALSE))   # removals after t_end  (not observed)
+    } else if(iota_dist == "weibull") {
       sum(dweibull2  (iota_recovered , shape, rate, log   = TRUE                    )) +
       sum(pweibull2  (iota_infectious, shape, rate, log.p = TRUE, lower.tail = FALSE))
     }

@@ -4,14 +4,14 @@
 \alias{compute_pi}
 \title{Probability of being removed before next observation time}
 \usage{
-compute_pi(theta, tau_T, iota_distribution, t_end)
+compute_pi(theta, tau_T, iota_dist, t_end)
 }
 \arguments{
-\item{theta}{named list with the parameters gamma (and nu and lambda)}
+\item{theta}{current values of the parameters for the SIR}
 
 \item{tau_T}{observed event times}
 
-\item{iota_distribution}{c("exponential", "weibull")}
+\item{iota_dist}{c("exponential", "weibull"); distribution of the infection period}
 
 \item{t_end}{time before which individuals may be removed}
 }
@@ -19,5 +19,5 @@ compute_pi(theta, tau_T, iota_distribution, t_end)
 a vector of the probabilities that individual infected at time tau_T are removed before t_end
 }
 \description{
-Compute p_i, the probability of being removed before t_end given an infection at time tau_T.
+Computes p_i, the probability of being removed before t_end given an infection at time tau_T.
 }

@@ -7,7 +7,7 @@
 dexp_trunc_log(x, lambda, lower, upper)
 }
 \arguments{
-\item{x}{vector}
+\item{x}{vector of values}
 
 \item{lambda}{rate parameter}
 

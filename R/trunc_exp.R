@@ -35,7 +35,7 @@ rexp_trunc <- function(n, lambda, lower, upper){ # Random Generator
 #'
 #' @inheritParams rexp_trunc
 #'
-#' @param x vector
+#' @param x vector of values
 #'
 #' @family truncated exponential
 #'

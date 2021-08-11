@@ -21,5 +21,8 @@ f_log(theta, SS, gener, b, iota_dist = "exponential")
 log likelihood
 }
 \description{
-Log likelihood of the stochastic SIR model
+allows non-Markovian dynamics through Weibull-distribution infectious periods (Streftaris and Gibson, 2004)
+allows generalized SIR process (Severo, 1969)
+Severo, N. C. (1969). Generalizations of some stochastic epidemic models. Mathematical Biosciences, 4(3-4), 395-402.
+Streftaris, G., & Gibson, G. J. (2004). Bayesian inference for stochastic epidemics in closed populations. Statistical Modelling, 4(1), 63-75.
 }

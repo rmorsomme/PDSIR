@@ -4,7 +4,7 @@
 \alias{experiment_1_output_analysis}
 \title{Analyze output of MCMC run}
 \usage{
-experiment_1_output_analysis(x, plot_id = NULL, path = NULL, burnin = NULL)
+experiment_1_output_analysis(x, plot_id = NULL, path = NULL, burnin = 0)
 }
 \arguments{
 \item{x}{object returned by the function experiment_1_proof_of_concept}

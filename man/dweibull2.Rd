@@ -7,7 +7,7 @@
 dweibull2(x, shape, rate, log = FALSE)
 }
 \arguments{
-\item{x}{vector}
+\item{x}{vector of values}
 
 \item{shape}{shape parameter}
 
@@ -21,3 +21,11 @@ vector of densities
 \description{
 Density of weibull distribution
 }
+\seealso{
+Other weibull2: 
+\code{\link{dweibull2_trunc_log}()},
+\code{\link{pweibull2}()},
+\code{\link{rweibull2_trunc}()},
+\code{\link{rweibull2}()}
+}
+\concept{weibull2}

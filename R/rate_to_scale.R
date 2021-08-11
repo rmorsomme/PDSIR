@@ -1,12 +1,9 @@
 
-#
-
 #' Re-parameterization for the weibull distribution
 #'
 #' Provides the scale parameter of the Weibull distribution
 #'
-#' @param rate rate parameter
-#' @param shape shape parameter
+#' @inheritParams pweibull2
 #'
 #' @return scale parameter
 #' @export

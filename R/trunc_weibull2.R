@@ -1,10 +1,36 @@
-#' CDF of weibull distribution
+#' Random generator for the truncated weibull distribution
 #'
-#' @param x vector
+#' shape and rate parameterization.
+#'
+#' @param n number of random values to generate
 #' @param shape shape parameter
 #' @param rate rate parameter
+#'
+#' @family weibull2
+#'
+#' @return vector of n random variables following a truncated weibull distribution
+#' @export
+#'
+rweibull2 <- function(n, shape, rate) {
+
+
+  scale <- rate_to_scale(rate, shape)
+  X     <- stats::rweibull(n, shape = shape, scale = scale)
+
+  return(X)
+
+}
+
+#' CDF of weibull distribution
+#'
+#' Lower and upper tail probabilities of the weibull distribution with the shape and rate parameterization.
+#'
+#' @inheritParams rweibull2
+#' @param x vector of values
 #' @param log.p logical; if TRUE, probabilities p are given as log(p)
 #' @param lower.tail logical; if TRUE (default), probabilities are P(X <= x), otherwise, P(X > x)
+#'
+#' @family weibull2
 #'
 #' @return vector of tail probabilities
 #' @export
@@ -12,22 +38,45 @@
 pweibull2 <- function(x, shape, rate, log.p = FALSE, lower.tail = TRUE) {
 
   scale <- rate_to_scale(rate, shape)
-  stats::pweibull(x, shape, scale = scale, log.p = log.p, lower.tail = lower.tail)
+  prob <- stats::pweibull(
+    x, shape = shape, scale = scale, log.p = log.p, lower.tail = lower.tail
+    )
+
+  return(prob)
+
+}
+
+#' Density of weibull distribution
+#'
+#' @inheritParams pweibull2
+#' @param log logical; whether to take the logarithm of the density
+#'
+#' @family weibull2
+#'
+#' @return vector of densities
+#' @export
+#'
+dweibull2 <- function(x, shape, rate, log = FALSE) {
+
+  scale <- rate_to_scale(rate, shape)
+  prob <- stats::dweibull(x, shape, scale = scale, log = log)
+
+  return(prob)
 
 }
 
 
+
+
+
 #' Random generator for the truncated weibull distribution
 #'
-#' @param n number of random variables to generate.
-#' @param shape shape parameter
-#' @param rate rate parameter
-#' @param lower lower bound
-#' @param upper upper bound
+#' @inheritParams propose_tau_T
+#' @inheritParams pweibull2
 #'
-#' @family truncated weibull
+#' @family weibull2
 #'
-#' @return n-length vector of random variables following a truncated weibull distribution
+#' @return vector of n random variables following a truncated weibull distribution
 #' @export
 #'
 rweibull2_trunc <- function(n, shape, rate, lower, upper) {
@@ -44,37 +93,14 @@ rweibull2_trunc <- function(n, shape, rate, lower, upper) {
 }
 
 
-#' Density of weibull distribution
-#'
-#' @param x vector
-#' @param shape shape parameter
-#' @param rate rate parameter
-#' @param log logical; whether to take the logarithm of the density
-#'
-#' @return vector of densities
-#' @export
-#'
-dweibull2 <- function(x, shape, rate, log = FALSE) {
-
-  scale <- rate_to_scale(rate, shape)
-  stats::dweibull(x, shape, scale = scale, log = log)
-
-}
-
-
-#
-
 #' Log density of the truncated Weibull distribution
 #'
-#' @param x vector
-#' @param shape shape parameter
-#' @param rate rate parameter
-#' @param lower lower bound
-#' @param upper upper bound
+#' @inheritParams rweibull2_trunc
+#' @param x vector of values
 #'
-#' @family truncated weibull
+#' @family weibull2
 #'
-#' @return vector of densities
+#' @return vector of log densities
 #' @export
 #'
 dweibull2_trunc_log <- function(x, shape, rate, lower, upper) {

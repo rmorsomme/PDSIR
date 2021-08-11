@@ -7,7 +7,7 @@
 pweibull2(x, shape, rate, log.p = FALSE, lower.tail = TRUE)
 }
 \arguments{
-\item{x}{vector}
+\item{x}{vector of values}
 
 \item{shape}{shape parameter}
 
@@ -21,5 +21,13 @@ pweibull2(x, shape, rate, log.p = FALSE, lower.tail = TRUE)
 vector of tail probabilities
 }
 \description{
-CDF of weibull distribution
+Lower and upper tail probabilities of the weibull distribution with the shape and rate parameterization.
 }
+\seealso{
+Other weibull2: 
+\code{\link{dweibull2_trunc_log}()},
+\code{\link{dweibull2}()},
+\code{\link{rweibull2_trunc}()},
+\code{\link{rweibull2}()}
+}
+\concept{weibull2}

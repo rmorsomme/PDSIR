@@ -18,8 +18,7 @@ experiment_1_proof_of_concept(
   iota_dist = "exponential",
   gener = FALSE,
   b = 1/2,
-  theta_0_factor_beta = 1,
-  theta_0_factor_gamma = 1,
+  theta_0_factor = c(1, 1),
   par_prior = list(a_beta = 0.1, b_beta = 1, a_gamma = 1, b_gamma = 1, a_R0 = 2, b_R0 =
     0.002)
 )
@@ -51,9 +50,7 @@ experiment_1_proof_of_concept(
 
 \item{b}{parameter of the generalized SIR}
 
-\item{theta_0_factor_beta}{factor by which the true value of beta is multiplied to determine the starting point of the Markov chain}
-
-\item{theta_0_factor_gamma}{factor by which the true value of beta is multiplied to determine the starting point of the Markov chain}
+\item{theta_0_factor}{factors by which the true value of the parameters is multiplied to initialize the Markov chain}
 
 \item{par_prior}{parameters of the prior distribution}
 }

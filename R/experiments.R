@@ -1,4 +1,3 @@
-
 #' Experiment 1: Proof of concept
 #'
 #' @param S0 size of initial susceptible population
@@ -15,8 +14,7 @@
 #' @param gener logical; whether to use the generalized SIR of Severo (1972)
 #' @param b parameter of the generalized SIR
 #' @param par_prior parameters of the prior distribution
-#' @param theta_0_factor_beta factor by which the true value of beta is multiplied to determine the starting point of the Markov chain
-#' @param theta_0_factor_gamma factor by which the true value of beta is multiplied to determine the starting point of the Markov chain
+#' @param theta_0_factor factors by which the true value of the parameters is multiplied to initialize the Markov chain
 #'
 #' @return list containing the parameters, observed data, Markov chain and run time of the algorithm
 #' @export
@@ -27,7 +25,7 @@ experiment_1_proof_of_concept <- function(
   N = 1e4, thin = 1, rho = 1,
   param = "bg", approx = "ldp",
   iota_dist = "exponential", gener = FALSE, b = 1/2,
-  theta_0_factor_beta = 1, theta_0_factor_gamma = 1,
+  theta_0_factor = c(1, 1), # for c(beta, gamma)
   par_prior = list(a_beta = 0.1, b_beta = 1, a_gamma = 1, b_gamma = 1, a_R0 = 2, b_R0 = 2e-3)
   ) {
 
@@ -35,23 +33,25 @@ experiment_1_proof_of_concept <- function(
   R0    <- theta[["R0"   ]]
   beta  <- R0 / gamma / S0
 
-  SIR  <- simulate_SIR(S0, I0, theta, t_end)
+  SIR  <- simulate_SEM(S0, I0, theta, t_end)
   Y    <- observed_data(SIR, K)
 
   # run a long chain
   theta_0 <- list(
-    beta  = theta_0_factor_beta  * beta ,
-    gamma = theta_0_factor_gamma * gamma,
-    R0 = S0 * theta_0_factor_beta * beta / (theta_0_factor_gamma * gamma)
+    beta  = theta_0_factor[1]  * beta ,
+    gamma = theta_0_factor[2] * gamma,
+    R0    = S0 * theta_0_factor[1] * beta / (theta_0_factor[2] * gamma)
     )
-  t0 <- Sys.time()
-  MC <- run_DAMCMC(
-    Y, N,
-    rho, param, approx, par_prior,
-    iota_dist, gener,
-    thin, theta_0 = theta_0
-    )
-  run_time <- Sys.time() - t0
+  {
+    t0 <- Sys.time()
+    MC <- run_DAMCMC(
+      Y, N,
+      rho, param, approx, par_prior,
+      iota_dist, gener,
+      thin, theta_0 = theta_0
+      )
+    run_time <- Sys.time() - t0
+  }
 
   return(list(theta = theta, Y = Y, MC = MC, run_time = run_time))
 
@@ -69,7 +69,9 @@ experiment_1_proof_of_concept <- function(
 #' @return list of summary statistics with and without burnin
 #' @export
 #'
-experiment_1_output_analysis <- function(x, plot_id = NULL, path = NULL, burnin = NULL) {
+experiment_1_output_analysis <- function(
+  x, plot_id = NULL, path = NULL, burnin = 0
+  ) {
 
   theta <- x    [["theta"]]
   Y     <- x    [["Y"    ]]
@@ -79,7 +81,7 @@ experiment_1_output_analysis <- function(x, plot_id = NULL, path = NULL, burnin 
 
   summary_no_burn <- analyze_MCMC(
     MC, burnin = 0,
-    beta_true = beta, gamma_true = gamma,
+    #beta_true = beta, gamma_true = gamma,
     plot_id = paste0(plot_id, "_no_burn"), path = path
     )
 

@@ -1,4 +1,4 @@
-#' Trajectories of the SEM
+#' Draw trajectories of a SEM
 #'
 #' Line plot of the compartment sizes over time.
 #'
@@ -37,7 +37,7 @@ draw_trajectories <- function(
     ggplot2::theme(text = ggplot2::element_text(size = 25))
 
   ggplot2::ggsave(
-    paste(plot_id, "trajectories.jpg", sep = "_"),
+    paste(plot_id, "trajectories.jpeg", sep = "_"),
     path = path, width = 1.5 * 1.61803, height = 1, scale = 5
   )
 

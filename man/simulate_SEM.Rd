@@ -6,20 +6,18 @@
 \usage{
 simulate_SEM(
   S0 = 1000,
-  E0 = 0,
   I0 = 10,
   t_end = 6,
   theta = list(R0 = 2, gamma = 1, shape = 2, rate = 1, epsilon = 1),
   gener = FALSE,
   b = 1/2,
+  E0 = 0,
   type = "SIR",
   iota_dist = "exponential"
 )
 }
 \arguments{
 \item{S0}{size of initial susceptible population}
-
-\item{E0}{intial exposed population size}
 
 \item{I0}{size initial infectious population}
 
@@ -30,6 +28,8 @@ simulate_SEM(
 \item{gener}{logical; whether to use the generalized SIR of Severo (1972)}
 
 \item{b}{parameter of the generalized SIR}
+
+\item{E0}{intial exposed population size}
 
 \item{type}{c("SIR", "SEIR"); type of process to simulate}
 

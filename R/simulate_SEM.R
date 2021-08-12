@@ -11,10 +11,10 @@
 #' @export
 #'
 simulate_SEM <- function(
-  S0 = 1e3, E0 = 0, I0 = 1e1, t_end = 6,
+  S0 = 1e3, I0 = 1e1, t_end = 6,
   theta = list(R0 = 2, gamma = 1, shape = 2, rate = 1, epsilon = 1),
   gener = FALSE, b = 1/2,
-  type = "SIR", # "SEIR"
+  E0 = 0, type = "SIR", # "SEIR"
   iota_dist = "exponential" # "weibull"
 ) {
 

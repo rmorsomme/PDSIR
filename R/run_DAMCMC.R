@@ -14,7 +14,7 @@
 run_DAMCMC <- function(
   Y, N = 1e4,
   rho = 1, param = "bg", approx = "ldp",  par_prior,
-  iota_dist = "exponential",  gener = FALSE, b = 1/2,
+  iota_dist = "exponential", gener = FALSE, b = 1/2,
   thin = 1, print_i = FALSE, save_SS = FALSE,
   theta_0
   ) {

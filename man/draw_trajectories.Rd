@@ -2,7 +2,7 @@
 % Please edit documentation in R/draw_trajectories.R
 \name{draw_trajectories}
 \alias{draw_trajectories}
-\title{Trajectories of the SEM}
+\title{Draw trajectories of a SEM}
 \usage{
 draw_trajectories(SEM, plot_id = NULL, path, t_end = 10, type = "SIR")
 }

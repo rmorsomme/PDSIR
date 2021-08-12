@@ -33,8 +33,8 @@ experiment_1_proof_of_concept <- function(
   R0    <- theta[["R0"   ]]
   beta  <- R0 / gamma / S0
 
-  SIR  <- simulate_SEM(S0, I0, theta, t_end)
-  Y    <- observed_data(SIR, K)
+  SIR   <- simulate_SEM(S0, I0, t_end, theta)
+  Y     <- observed_data(SIR, K)
 
   # run a long chain
   theta_0 <- list(
@@ -94,5 +94,43 @@ experiment_1_output_analysis <- function(
 
   out <- list(summary_no_burn = summary_no_burn, summary_burn = summary_burn)
   return(out)
+
+}
+
+
+
+
+#' Experiment 2: Compare trajectories of SIR and PD-SIR process
+#'
+#' @inheritParams experiment_1_proof_of_concept
+#' @inheritParams experiment_1_output_analysis
+#'
+#' @param Ks vector of numbers of time intervals to consider for the PD-SIR process
+#'
+#' @return figures comparing the trajectories of the PDSIR and SIR for different value K
+#' @export
+#'
+experiment_2_PDSIR_trajectories <- function(
+  S0 = 1e4, I0 = 1e1, theta = list(R0 = 4, gamma = 1),
+  t_end = 6, Ks = c(3, 5, 10, 50, 1e3),
+  iota_dist = "exponential", gener = FALSE, b = 1/2,
+  path
+  ) {
+
+  theta <- add_beta(theta, S0)
+
+  # SIR
+  SIR   <- simulate_SEM(S0, I0, t_end, theta)
+  draw_trajectories(SIR, plot_id = "E2", path, t_end, type = "SIR")
+
+  # PDSIR
+  for(K in Ks) {
+
+    Y        <- observed_data(SIR, K)
+    PDSIR    <- rprop_x(theta, Y, gener, b, iota_dist, approx = "ldp")
+    PDSIR_SI <- suff_stat(PDSIR, Y, gener, b, return_SI = TRUE)
+    compare_trajectories(SIR, PDSIR_SI, paste0("E2_K", K), path, t_end)
+
+  }
 
 }

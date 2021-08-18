@@ -10,7 +10,8 @@ run_DAMCMC(
   rho = 1,
   param = "bg",
   approx = "ldp",
-  par_prior,
+  par_prior = list(a_beta = 0.1, b_beta = 1, a_gamma = 1, b_gamma = 1, a_R0 = 2, b_R0 =
+    0.002),
   iota_dist = "exponential",
   gener = FALSE,
   b = 1/2,

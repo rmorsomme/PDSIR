@@ -5,11 +5,10 @@
 #' @param burnin number of iterations to discard
 #' @param thin thinning argument for the iterations of the Markov chain
 #' @param plot_id name file for the figure
+#' @param path directory in which to save the figure
 #' @param save_fig logical; whether to save the figures generated
 #' @param do_SS logical; whether to analyze the summary statistics in addition to the parameters
-#' @param beta_true true value of the beta parameter
-#' @param gamma_true true value of the gamma parameter
-#' @param path directory in which to save the figure
+#' @param theta_true true value of the parameters
 #'
 #' @importFrom dplyr %>%
 #' @importFrom rlang .data
@@ -20,8 +19,8 @@
 analyze_MCMC <- function(
   MC, burnin = 0, thin = 1,
   plot_id = NULL, path = NULL, save_fig = TRUE, do_SS = FALSE,
-  beta_true, gamma_true
-) {
+  theta_true
+  ) {
 
   # Setup
   theta         <- MC[["theta"      ]]
@@ -29,6 +28,7 @@ analyze_MCMC <- function(
   if(do_SS)  SS <- MC[["SS"         ]]
   rate_accept   <- MC[["rate_accept"]]
   S0            <- MC[["S0"         ]]
+  run_time      <- MC[["run_time"   ]]
 
   # Data Wrangling
   theta_tidy <- data.table::rbindlist(theta) %>%
@@ -37,7 +37,7 @@ analyze_MCMC <- function(
     dplyr::filter(.data$Iteration %% thin == 0)
 
   if(do_SS) {
-    SS_tidy     <- SS %>%
+    SS_tidy <- SS %>%
       purrr::map( ~ .[c("n_T", "n_J", "integral_SI", "integral_I")]) %>%
       data.table::rbindlist  %>%
       add_iteration %>%
@@ -47,6 +47,7 @@ analyze_MCMC <- function(
 
   # Figures
   if(save_fig) {
+
     # Traceplots
     tp_beta  <- draw_traceplot(theta_tidy, "beta"       , plot_id, path)
     tp_gamma <- draw_traceplot(theta_tidy, "gamma"      , plot_id, path)
@@ -88,12 +89,14 @@ analyze_MCMC <- function(
 
   # Summary Statistics
   out <- list(
+    run_time    = run_time,
     post_mean   = colMeans(dplyr::select(theta_tidy, - .data$Iteration)),
     quant_05    = dplyr::select(theta_tidy, - .data$Iteration) %>% purrr::map_dbl(stats::quantile, probs = 0.05),
     quant_95    = dplyr::select(theta_tidy, - .data$Iteration) %>% purrr::map_dbl(stats::quantile, probs = 0.95),
     rate_accept = rate_accept,
     ESS         = coda::effectiveSize(coda::mcmc(theta_tidy))
   )
+  out[["ESS_sec"]] <- out[["ESS"]] / run_time
 
   return(out)
 

@@ -4,10 +4,18 @@
 \alias{experiment_1_output_analysis}
 \title{Analyze output of MCMC run}
 \usage{
-experiment_1_output_analysis(x, plot_id = NULL, path = NULL, burnin = 0)
+experiment_1_output_analysis(
+  x,
+  theta_true,
+  plot_id = NULL,
+  path = NULL,
+  burnin = 0
+)
 }
 \arguments{
 \item{x}{object returned by the function experiment_1_proof_of_concept}
+
+\item{theta_true}{true value of the parameters}
 
 \item{plot_id}{name file for the figures}
 
@@ -16,7 +24,7 @@ experiment_1_output_analysis(x, plot_id = NULL, path = NULL, burnin = 0)
 \item{burnin}{number of iterations to discard, the default value NULL will discard half of the draws.}
 }
 \value{
-list of summary statistics with and without burnin
+list of summary statistics with and without burn-in
 }
 \description{
 Analyze output of MCMC run

@@ -13,11 +13,14 @@
 #'
 run_DAMCMC <- function(
   Y, N = 1e4,
-  rho = 1, param = "bg", approx = "ldp",  par_prior,
+  rho = 1, param = "bg", approx = "ldp",
+  par_prior = list(a_beta = 0.1, b_beta = 1, a_gamma = 1, b_gamma = 1, a_R0 = 2, b_R0 = 2e-3),
   iota_dist = "exponential", gener = FALSE, b = 1/2,
   thin = 1, print_i = FALSE, save_SS = FALSE,
   theta_0
   ) {
+
+  run_time <- system.time({
 
   # Setup
   SS_save <- x_save <- theta_save <- vector(mode = "list", length = N / thin)
@@ -95,6 +98,12 @@ run_DAMCMC <- function(
     theta = theta_save, loglik = f_save, rate_accept = mean(accept), S0 = Y[["S0"]]
   )
   if(save_SS) out[["SS"]] <- SS_save
+
+
+  }) # end-system.time
+  run_time <- as.numeric(run_time)[3]
+  out[["run_time"]] <-  run_time
+
   return(out)
 
 }

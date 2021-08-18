@@ -26,6 +26,7 @@ Imports:
     dplyr,
     ggplot2,
     purrr,
+    readr,
     rlang,
     stats,
     tibble,

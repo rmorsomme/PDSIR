@@ -12,8 +12,7 @@ analyze_MCMC(
   path = NULL,
   save_fig = TRUE,
   do_SS = FALSE,
-  beta_true,
-  gamma_true
+  theta_true
 )
 }
 \arguments{
@@ -31,9 +30,7 @@ analyze_MCMC(
 
 \item{do_SS}{logical; whether to analyze the summary statistics in addition to the parameters}
 
-\item{beta_true}{true value of the beta parameter}
-
-\item{gamma_true}{true value of the gamma parameter}
+\item{theta_true}{true value of the parameters}
 }
 \value{
 a list of summary statistics including posterior means, posterior quantiles, effective sample size and the acceptance rate

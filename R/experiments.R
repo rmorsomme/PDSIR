@@ -149,7 +149,7 @@ experiment_3_acceptance_vs_rho <- function(
   S0s = c(1e2, 5e2, 1e3, 5e3), I0 = 1e1,
   R0s = c(2  , 2.5, 3  , 3.5), gamma = 1,
   t_end = 6, K = 20,
-  rhos = c(1e-2, seq(0.1, 1, by = 0.1)),
+  rhos = c(0.05, 0.1, 0.25, 0.5, 1),
   N = 1e3, thin = 1,
   path
   ) {
@@ -182,7 +182,7 @@ experiment_3_acceptance_vs_rho <- function(
       print(paste0(S0, " - ", rho, ": ", Sys.time()))
 
       summary  <- analyze_MCMC(
-        MC, burnin = N / 2, thin,
+        MC, burnin = min(N / 2, 1e4), thin,
         plot_id = paste0("E3_S0=", S0, "_rho=", rho), path,
         save_fig = FALSE,
         theta_true = theta

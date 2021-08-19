@@ -10,8 +10,8 @@ experiment_3_acceptance_vs_rho(
   R0s = c(2, 2.5, 3, 3.5),
   gamma = 1,
   t_end = 6,
-  K = 10,
-  rhos = c(0.01, seq(0.1, 1, by = 0.1)),
+  K = 20,
+  rhos = c(0.01, 0.05, 0.1, 0.25, 0.5, 0.66, 1),
   N = 1000,
   thin = 1,
   path

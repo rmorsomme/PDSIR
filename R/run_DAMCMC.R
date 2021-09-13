@@ -7,6 +7,7 @@
 #' @param theta_0 initial value for the parameters
 #' @param print_i logical; whether to print the iteration
 #' @param save_SS logical; whether to save the sufficient statistics generated each iteration
+#' @param par_prior parameters of the prior distributions
 #'
 #' @return list with the draws for the parameters, the log likelihood, acceptance rate and size of initial susceptible population
 #' @export
@@ -14,10 +15,12 @@
 run_DAMCMC <- function(
   Y, N = 1e4,
   rho = 1, param = "bg", approx = "ldp",
-  par_prior = list(a_beta = 0.1, b_beta = 1, a_gamma = 1, b_gamma = 1, a_R0 = 2, b_R0 = 2e-3),
   iota_dist = "exponential", gener = FALSE, b = 1/2,
-  thin = 1, print_i = FALSE, save_SS = FALSE,
-  theta_0
+  thin = 1, theta_0,
+  print_i = FALSE,  save_SS = FALSE,
+  par_prior = list(
+    a_beta = 0.1, b_beta = 1, a_gamma = 1, b_gamma = 1, a_R0 = 2, b_R0 = 2e-3, a_lambda = 0.1, b_lambda = 0.1
+  )
   ) {
 
   run_time <- system.time({
@@ -27,21 +30,23 @@ run_DAMCMC <- function(
   f_save  <- numeric(N / thin)
   accept  <- numeric(N)
 
-  theta <- theta_0
+  theta_0 <- complete_theta(theta_0, iota_dist, Y[["S0"]])
+  theta_save[[1]] <- theta <- theta_0
+
   SS_current <- list(compatible = FALSE)
   while(! SS_current[["compatible"]]) {
     x_current  <- rprop_x(theta, Y, gener, b, iota_dist, approx)
     SS_current <- suff_stat(x_current, Y, gener, b)
   }
 
-  f_target   <- f_log(theta, SS_current, gener, b, iota_dist)
+  f_save[1] <- f_target <- f_log(theta, SS_current, gener, b, iota_dist)
 
   #
   # MH
   for(i in 2 : N) {
 
     # Update theta (Gibbs)
-    theta <- gibbs_theta(SS_current, par_prior, theta, param, Y)
+    theta <- gibbs_theta(SS_current, iota_dist, par_prior, theta, param, Y)
 
 
     # Propose latent space

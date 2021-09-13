@@ -4,18 +4,20 @@
 #'
 #' @param n number of random values to generate
 #' @param shape shape parameter
-#' @param rate rate parameter
+#' @param lambda rate parameter
 #'
 #' @family weibull2
 #'
 #' @return vector of n random variables following a truncated weibull distribution
 #' @export
 #'
-rweibull2 <- function(n, shape, rate) {
+rweibull2 <- function(n, shape, lambda) {
 
+  #scale <- rate_to_scale(lambda, shape)
+  #X     <- stats::rweibull(n, shape = shape, scale = scale)
 
-  scale <- rate_to_scale(rate, shape)
-  X     <- stats::rweibull(n, shape = shape, scale = scale)
+  U <- stats::runif(n)
+  X <- (- log(U) / lambda) ^ (1 / shape)
 
   return(X)
 
@@ -35,12 +37,24 @@ rweibull2 <- function(n, shape, rate) {
 #' @return vector of tail probabilities
 #' @export
 #'
-pweibull2 <- function(x, shape, rate, log.p = FALSE, lower.tail = TRUE) {
+pweibull2 <- function(x, shape, lambda, log.p = FALSE, lower.tail = TRUE) {
 
-  scale <- rate_to_scale(rate, shape)
-  prob <- stats::pweibull(
-    x, shape = shape, scale = scale, log.p = log.p, lower.tail = lower.tail
-    )
+  prob <- if(log.p) {
+    if(!lower.tail) {
+      - lambda * x^shape
+    } else {
+      log(1 - exp( - lambda * x^shape))
+    }
+  } else {
+    if(!lower.tail) {
+          exp( - lambda * x^shape)
+    } else {
+      1 - exp( - lambda * x^shape)
+    }
+  }
+
+#  scale <- rate_to_scale(lambda, shape)
+#  prob <- stats::pweibull(x, shape, scale, lower.tail, log.p)
 
   return(prob)
 
@@ -56,12 +70,19 @@ pweibull2 <- function(x, shape, rate, log.p = FALSE, lower.tail = TRUE) {
 #' @return vector of densities
 #' @export
 #'
-dweibull2 <- function(x, shape, rate, log = FALSE) {
+dweibull2 <- function(x, shape, lambda, log = FALSE) {
 
-  scale <- rate_to_scale(rate, shape)
-  prob <- stats::dweibull(x, shape, scale = scale, log = log)
+  dens <- if(log) {
+    log(lambda) + log(shape) + (shape-1) * log(x) - lambda * x^shape
+  } else {
+    lambda * shape * x^(shape-1) * exp( - lambda * x^shape)
+  }
 
-  return(prob)
+
+#  scale <- rate_to_scale(lambda, shape)
+#  dens  <- stats::dweibull(x, shape, scale, log)
+
+  return(dens)
 
 }
 
@@ -79,14 +100,15 @@ dweibull2 <- function(x, shape, rate, log = FALSE) {
 #' @return vector of n random variables following a truncated weibull distribution
 #' @export
 #'
-rweibull2_trunc <- function(n, shape, rate, lower, upper) {
+rweibull2_trunc <- function(n, shape, lambda, lower, upper) {
 
-  const <- pweibull2(upper, shape, rate) - pweibull2(lower, shape, rate)
-  shift <- pweibull2(lower, shape, rate)
+  shift <-         exp(- lambda * lower ^ shape)
+  const <- shift - exp(- lambda * upper ^ shape)
+  #const <- pweibull2(upper, shape, lambda) - pweibull2(lower, shape, lambda) # sanity check
+  #shift <- pweibull2(lower, shape, lambda, lower.tail = FALSE) # sanity check
 
   U <- stats::runif(n)
-  V <- U * const + shift
-  X <- (- log(1 - V) / rate) ^ (1 / shape)
+  X <- (- log(shift - const * U) / lambda) ^ (1 / shape)
 
   return(X)
 
@@ -103,13 +125,18 @@ rweibull2_trunc <- function(n, shape, rate, lower, upper) {
 #' @return vector of log densities
 #' @export
 #'
-dweibull2_trunc_log <- function(x, shape, rate, lower, upper) {
+dweibull2_trunc_log <- function(x, shape, lambda, lower, upper) {
 
   stopifnot(all(lower <= x), all(x <= upper))
 
-  const  <- pweibull2(upper, shape, rate) - pweibull2(lower, shape, rate)
-  loglik <- dweibull2(x    , shape, rate, log = TRUE) - log(const)
+  const   <- exp(- lambda * lower ^ shape) - exp(- lambda * upper ^ shape)
+  logdens <- dweibull2(x, shape, lambda, log = TRUE) - log(const)
 
-  return(loglik)
+
+
+#  const  <- pweibull2(upper, shape, lambda) - pweibull2(lower, shape, lambda)
+#  loglik <- dweibull2(x    , shape, lambda, log = TRUE) - log(const)
+
+  return(logdens)
 
 }

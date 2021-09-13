@@ -8,7 +8,7 @@
 #' @return scale parameter
 #' @export
 #'
-rate_to_scale <- function(rate, shape){
-  scale <- rate ^ (- 1 / shape)
+rate_to_scale <- function(lambda, shape){
+  scale <- lambda ^ (- 1 / shape)
   return(scale)
 }

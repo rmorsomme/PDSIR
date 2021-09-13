@@ -24,10 +24,12 @@ rprop_x <- function(
   ts     <- Y[["ts"   ]]
   t_end  <- Y[["t_end"]]
 
+  theta <- complete_theta(theta, iota_dist, S0)
+
   beta   <- theta[["beta"  ]]
   gamma  <- theta[["gamma" ]]
   lambda <- theta[["lambda"]]
-  nu     <- theta[["nu"    ]]
+  shape  <- theta[["shape" ]]
 
   K        <- length(T_k)
   T_cumsum <- cumsum(T_k)
@@ -58,7 +60,7 @@ rprop_x <- function(
 
   if(n_k_update > 0) {
 
-    tau_T[i_k_update] <- 0
+    tau_T[i_k_update] <- 0 # should not be 0 for non-Markovian process
 
     # Compute p_i
     p_i[i_k_update] <- compute_pi(theta, tau_T[i_k_update], iota_dist, t_end)
@@ -79,9 +81,7 @@ rprop_x <- function(
     if(T_k[k] > 0) {
 
       # Verify that I(t_k) > 0
-      if(I_k[k] == 0){
-        return(list(compatible = FALSE))
-      }
+      if(I_k[k] == 0)  return(list(compatible = FALSE))
 
       i_k        <- I0 + (U_k[k] + 1) : U_k[k + 1] # indices of particles infected during interval k
       i_k_update <- intersect(i_k, i_update)

@@ -16,22 +16,22 @@ dprop_x <- function(
 
   # Setup
 
-  T_k   <- Y[["T_k"  ]]
-  I0    <- Y[["I0"   ]]
-  ts    <- Y[["ts"   ]]
-  t_end <- Y[["t_end"]]
-  K     <- length(T_k)
-  T_sum <- sum(T_k) + I0
+  T_k    <- Y[["T_k"  ]]
+  I0     <- Y[["I0"   ]]
+  ts     <- Y[["ts"   ]]
+  t_end  <- Y[["t_end"]]
+  K      <- length(T_k)
+  T_sum  <- sum(T_k) + I0
 
-  beta  <- theta[["beta"  ]]
-  gamma <- theta[["gamma" ]]
-  rate  <- theta[["lambda"]]
-  shape <- theta[["nu"    ]]
+  beta   <- theta[["beta"  ]]
+  gamma  <- theta[["gamma" ]]
+  lambda <- theta[["lambda"]]
+  shape  <- theta[["shape" ]]
 
-  tau_T <- x    [["tau_T"]]
-  tau_J <- x    [["tau_J"]]
-  I_k   <- x    [["I_k"  ]]
-  S_k   <- x    [["S_k"  ]]
+  tau_T  <- x    [["tau_T"]]
+  tau_J  <- x    [["tau_J"]]
+  I_k    <- x    [["I_k"  ]]
+  S_k    <- x    [["S_k"  ]]
 
 
   # Contribution of infections

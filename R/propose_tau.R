@@ -39,13 +39,13 @@ propose_tau_J <- function(theta, tau_T, iota_dist, t_end) {
   # Setup
   gamma  <- theta[["gamma" ]]
   lambda <- theta[["lambda"]]
-  nu     <- theta[["nu"    ]]
+  shape  <- theta[["shape" ]]
 
   # Compute p_i
   iota_obs <- if(iota_dist == "exponential") {
-    rexp_trunc    (length(tau_T), gamma             , 0, t_end - tau_T)
+    rexp_trunc    (length(tau_T), gamma         , 0, t_end - tau_T)
   } else      if(iota_dist == "weibull") {
-    rweibull2_trunc(length(tau_T), nu, rate = lambda, 0, t_end - tau_T)
+    rweibull2_trunc(length(tau_T), shape, lambda, 0, t_end - tau_T)
   }
 
   tau_J <- tau_T + iota_obs

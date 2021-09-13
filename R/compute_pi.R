@@ -15,15 +15,15 @@
 compute_pi <- function(theta, tau_T, iota_dist, t_end) {
 
   # Setup
-  gamma <- theta[["gamma" ]]
-  rate  <- theta[["lambda"]]
-  shape<- theta[["nu"    ]]
+  gamma  <- theta[["gamma" ]]
+  lambda <- theta[["lambda"]]
+  shape  <- theta[["shape" ]]
 
   # Compute p_i
   p_i <- if(iota_dist == "exponential") {
     stats::pexp(t_end - tau_T, gamma)
   } else if(iota_dist == "weibull") {
-    pweibull2(t_end - tau_T, shape, rate)
+    pweibull2(t_end - tau_T, shape, lambda)
   }
 
   # Output

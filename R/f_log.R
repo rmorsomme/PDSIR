@@ -20,14 +20,14 @@ f_log <- function(theta, SS, gener, b, iota_dist = "exponential") {
   # Setup
   beta   <- theta[["beta"  ]]
   gamma  <- theta[["gamma" ]]
-  rate   <- theta[["nu"    ]]
-  shape  <- theta[["lambda"]]
+  shape  <- theta[["shape" ]]
+  lambda <- theta[["lambda"]]
 
   n_T             <- SS[["n_T"            ]]
   I_tau_T         <- SS[["I_tau_T"        ]]
   S_tau_T         <- SS[["S_tau_T"        ]]
   integral_SI     <- SS[["integral_SI"    ]]
-  iota_recovered  <- SS[["iota_recovered" ]]
+  iota_removed    <- SS[["iota_removed"   ]]
   iota_infectious <- SS[["iota_infectious"]]
 
   # # Loglik
@@ -47,11 +47,11 @@ f_log <- function(theta, SS, gener, b, iota_dist = "exponential") {
   # contribution of removals
   loglik_remov <-
     if(iota_dist == "exponential") {
-      sum(stats::dexp(iota_recovered , gamma      , log   = TRUE                    )) + # removals before t_end (observed)
-      sum(stats::pexp(iota_infectious, gamma      , log.p = TRUE, lower.tail = FALSE))   # removals after t_end  (not observed)
+      sum(stats::dexp(iota_removed   , gamma        , log   = TRUE                    )) + # removals before t_end (observed)
+      sum(stats::pexp(iota_infectious, gamma        , log.p = TRUE, lower.tail = FALSE))   # removals after  t_end (not observed)
     } else if(iota_dist == "weibull") {
-      sum(dweibull2  (iota_recovered , shape, rate, log   = TRUE                    )) +
-      sum(pweibull2  (iota_infectious, shape, rate, log.p = TRUE, lower.tail = FALSE))
+      sum(dweibull2  (iota_removed   , shape, lambda, log   = TRUE                    )) +
+      sum(pweibull2  (iota_infectious, shape, lambda, log.p = TRUE, lower.tail = FALSE))
     }
 
   loglik <- loglik_infec + loglik_remov

@@ -12,10 +12,10 @@
 #'
 simulate_SEM <- function(
   S0 = 1e3, I0 = 1e1, t_end = 6,
-  theta = list(R0 = 2, gamma = 1, shape = 2, rate = 1, epsilon = 1),
+  theta = list(R0 = 2.5, gamma = 1, lambda = 1, shape = 1),
+  iota_dist = "exponential", # "weibull"
   gener = FALSE, b = 1/2,
-  E0 = 0, type = "SIR", # "SEIR"
-  iota_dist = "exponential" # "weibull"
+  E0 = 0, type = "SIR" # "SEIR"
 ) {
 
   #
@@ -27,19 +27,13 @@ simulate_SEM <- function(
   #
   # Parameters
 
-  gamma <- theta[["gamma"]]
-  R0    <- theta[["R0"   ]]
-  shape <- theta[["shape"]]
-  rate  <- theta[["rate" ]]
-  delta <- theta[["delta"]]
+  theta <- complete_theta(theta, iota_dist, S0)
 
-  iota_mean <- if(iota_dist == "exponential") {
-    1 / gamma
-  } else if(iota_dist == "weibull") {
-    rate ^ (- 1 / shape) * gamma(1 + 1 / shape) # mean infectious time
-  }
-
-  beta  <- R0 / iota_mean / S0
+  beta    <- theta[["beta"   ]]
+  gamma   <- theta[["gamma"  ]]
+  lambda  <- theta[["lambda" ]]
+  shape   <- theta[["shape"  ]]
+  epsilon <- theta[["epsilon"]]
 
 
   #
@@ -52,7 +46,7 @@ simulate_SEM <- function(
   if(type == "SIR") {
 
     tau_T[1 : I0] <- 0 # TODO: relax assumption that individual initially infected at 0; important for non-Markovian process
-    iotas <- simulate_iota(I0, iota_dist, gamma, shape, rate)
+    iotas <- simulate_iota(I0, iota_dist, gamma, shape, lambda)
     tau_J[1 : I0] <- tau_T[1 : I0] + iotas
 
   } else if(type == "SEIR") {
@@ -60,14 +54,16 @@ simulate_SEM <- function(
     if(I0 > 0) {
       tau_T[1 : I0] <- -Inf
       tau_F[1 : I0] <- 0 # TODO: relax assumption
-      iotas <- simulate_iota(I0, iota_dist, gamma, shape, rate)
+      iotas <- simulate_iota(I0, iota_dist, gamma, shape, lambda)
       tau_J[1 : I0] <- tau_F[1 : I0] + iotas
     } # end-if(I0)
     if(E0 > 0) {
       tau_T[I0 + (1 : E0)] <- 0
-      epsilons <- stats::rexp(E0, delta)
+      epsilons <- rexp2(E0, epsilon)
+    #  epsilons <- stats::rexp(E0, epsilon)
       tau_F[I0 + (1 : E0)] <- tau_T[I0 + (1 : E0)] + epsilons
     } # end-if(E0)
+
   }# end-if(SIR)
 
   # Initialize compartments, time, event type and event number
@@ -92,7 +88,8 @@ simulate_SEM <- function(
     # Generate candidate infection time
     tau_T_candidate <- if(S[j] > 0) {
       mu_j <- if(gener)  beta * S[j]^(1 - b) * I[j]  else beta * S[j] * I[j]
-      t[j] + stats::rexp(1, mu_j)            # candidate infection time
+      t[j] + rexp2(1, mu_j)            # candidate infection time
+     # t[j] + stats::rexp(1, mu_j)            # candidate infection time
     } else if(S[j] == 0) {            # susceptible pop depleted
       Inf
     }
@@ -116,7 +113,7 @@ simulate_SEM <- function(
       }
 
       # simulate removal time of newly infected
-      iota <- simulate_iota(1, iota_dist, gamma, shape, rate)
+      iota <- simulate_iota(1, iota_dist, gamma, shape, lambda)
 
       tau_J[I0 + n_t] <- tau_T[I0 + n_t] + iota
 
@@ -164,24 +161,32 @@ simulate_SEM <- function(
     sum(I[t_obs] * S[t_obs]         * dt)
   }
 
-  beta_MLE  <- n_t_obs / integral_SI_obs
-  gamma_MLE <- n_j_obs / integral_I_obs
-  #rate_MLE  <- n_j_obs / (sum(SS_true[["iota_recovered"]]^nu_true) + sum(SS_true[["iota_infectious"]]^nu_true))
-  #shape_MLE <- optimize(
-  # nu_posterior,
-  # interval = c(0.01, 1e1),
-  # theta = theta_true, SS = SS_true,
-  # maximum = TRUE
-  # )[["maximum"]]
-  # TODO: run optim(), with true values as initial values to obtain MLE
+  beta_MLE   <- n_t_obs / integral_SI_obs
+  gamma_MLE  <- n_j_obs / integral_I_obs
+  R0_MLE     <- S0 * beta_MLE / gamma_MLE
+
 
   # Output
   out <- list(
     x = x, t = t, X = X, S = S, E = E, I = I, t_end = t_end, I0 = I0, S0 = S0,
-    beta_MLE = beta_MLE, gamma_MLE = gamma_MLE,
-    n_t_obs = n_t_obs, n_j_obs = n_j_obs,
-    integral_SI_obs = integral_SI_obs, integral_I_obs = integral_I_obs
+    MLE = c("beta" = beta_MLE, "gamma" = gamma_MLE, "R0" = R0_MLE),
+    SS = c("n_t" = n_t_obs, "n_j" = n_j_obs, "integral_SI" = integral_SI_obs, "integral_I" = integral_I_obs)
   )
+
+  if(iota_dist == "weibull") {
+
+    lambda_MLE <- n_j_obs / sum( (pmin(tau_J, t_end) - tau_T)[is.finite(tau_T)]^shape )
+    out[["MLE"]][["lambda"]] <- lambda_MLE
+
+    # shape_MLE <- optimize(
+    # nu_posterior,
+    # interval = c(0.01, 1e1),
+    # theta = theta_true, SS = SS_true,
+    # maximum = TRUE
+    # )[["maximum"]]
+    # TODO: run optim(), with true values as initial values to obtain MLE
+
+  }
 
   return(out)
 

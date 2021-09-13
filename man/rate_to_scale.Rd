@@ -4,10 +4,10 @@
 \alias{rate_to_scale}
 \title{Re-parameterization for the weibull distribution}
 \usage{
-rate_to_scale(rate, shape)
+rate_to_scale(lambda, shape)
 }
 \arguments{
-\item{rate}{rate parameter}
+\item{lambda}{rate parameter}
 
 \item{shape}{shape parameter}
 }

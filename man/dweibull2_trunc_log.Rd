@@ -4,14 +4,14 @@
 \alias{dweibull2_trunc_log}
 \title{Log density of the truncated Weibull distribution}
 \usage{
-dweibull2_trunc_log(x, shape, rate, lower, upper)
+dweibull2_trunc_log(x, shape, lambda, lower, upper)
 }
 \arguments{
 \item{x}{vector of values}
 
 \item{shape}{shape parameter}
 
-\item{rate}{rate parameter}
+\item{lambda}{rate parameter}
 
 \item{lower}{lower bound}
 

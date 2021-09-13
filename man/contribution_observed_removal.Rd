@@ -8,8 +8,8 @@ contribution_observed_removal(
   theta,
   tau_T,
   tau_J,
-  tau_J_obs,
-  iota_distribution,
+  i_update_obs,
+  iota_dist,
   t_end
 )
 }
@@ -20,9 +20,9 @@ contribution_observed_removal(
 
 \item{tau_J}{removal times}
 
-\item{tau_J_obs}{index of observed removal times}
+\item{i_update_obs}{indices of observations to update}
 
-\item{iota_distribution}{c("exponential", "weibull"); distribution of infectious time}
+\item{iota_dist}{c("exponential", "weibull"); distribution of the infection period}
 
 \item{t_end}{end of observation window}
 }

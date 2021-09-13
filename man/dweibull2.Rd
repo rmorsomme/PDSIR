@@ -4,14 +4,14 @@
 \alias{dweibull2}
 \title{Density of weibull distribution}
 \usage{
-dweibull2(x, shape, rate, log = FALSE)
+dweibull2(x, shape, lambda, log = FALSE)
 }
 \arguments{
 \item{x}{vector of values}
 
 \item{shape}{shape parameter}
 
-\item{rate}{rate parameter}
+\item{lambda}{rate parameter}
 
 \item{log}{logical; whether to take the logarithm of the density}
 }

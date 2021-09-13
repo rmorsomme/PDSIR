@@ -2,7 +2,7 @@
 % Please edit documentation in R/experiments.R
 \name{experiment_3_acceptance_vs_rho}
 \alias{experiment_3_acceptance_vs_rho}
-\title{Experiment 3: Evakuate impact of rho on the M-H acceptance rate}
+\title{Experiment 3: Evaluate impact of rho on the M-H acceptance rate}
 \usage{
 experiment_3_acceptance_vs_rho(
   S0s = c(100, 500, 1000, 5000),
@@ -11,9 +11,10 @@ experiment_3_acceptance_vs_rho(
   gamma = 1,
   t_end = 6,
   K = 20,
-  rhos = c(0.01, 0.05, 0.1, 0.25, 0.5, 0.66, 1),
+  rhos = c(0.02, 0.05, 0.1, 0.25, 0.5, 1),
   N = 1000,
   thin = 1,
+  iota_dist = "exponential",
   path
 )
 }
@@ -36,11 +37,13 @@ experiment_3_acceptance_vs_rho(
 
 \item{thin}{thinning parameter for the Markov chain}
 
+\item{iota_dist}{c("exponential", "weibull"); distribution of the infection period}
+
 \item{path}{directory in which to save the figure}
 }
 \value{
 saves figures and a df summaryzing the results
 }
 \description{
-Experiment 3: Evakuate impact of rho on the M-H acceptance rate
+Experiment 3: Evaluate impact of rho on the M-H acceptance rate
 }

@@ -4,16 +4,18 @@
 \alias{gibbs_theta}
 \title{Gibbs sampler for theta}
 \usage{
-gibbs_theta(SS, par_prior, theta, param, Y)
+gibbs_theta(SS, iota_dist, par_prior, theta, param, Y)
 }
 \arguments{
 \item{SS}{sufficient statistics}
 
-\item{par_prior}{parameters of the prior distribution}
+\item{iota_dist}{c("exponential", "weibull"); distribution of the infection period}
+
+\item{par_prior}{parameters of the prior distributions}
 
 \item{theta}{parameters of the SIR process}
 
-\item{param}{c("bg", "bR"); parameterize the models in terms of (beta, gamma) or (beta, R0)}
+\item{param}{c("bg", "bR"); parameterization (beta, gamma) or (beta, R0)}
 
 \item{Y}{observed data}
 }

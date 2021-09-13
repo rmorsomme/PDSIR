@@ -10,15 +10,15 @@ run_DAMCMC(
   rho = 1,
   param = "bg",
   approx = "ldp",
-  par_prior = list(a_beta = 0.1, b_beta = 1, a_gamma = 1, b_gamma = 1, a_R0 = 2, b_R0 =
-    0.002),
   iota_dist = "exponential",
   gener = FALSE,
   b = 1/2,
   thin = 1,
+  theta_0,
   print_i = FALSE,
   save_SS = FALSE,
-  theta_0
+  par_prior = list(a_beta = 0.1, b_beta = 1, a_gamma = 0.1, b_gamma = 0.1, a_R0 = 2,
+    b_R0 = 0.002, a_lambda = 0.1, b_lambda = 0.1)
 )
 }
 \arguments{
@@ -32,8 +32,6 @@ run_DAMCMC(
 
 \item{approx}{c("poisson", "ldp"); whether to approximate the distribution of the infection times with a poisson process or a linear death process}
 
-\item{par_prior}{parameters of the prior distribution}
-
 \item{iota_dist}{c("exponential", "weibull"); distribution of the infection period}
 
 \item{gener}{logical; whether to use the generalized SIR of Severo (1972)}
@@ -42,11 +40,13 @@ run_DAMCMC(
 
 \item{thin}{thinning parameter for the Markov chain}
 
+\item{theta_0}{initial value for the parameters}
+
 \item{print_i}{logical; whether to print the iteration}
 
 \item{save_SS}{logical; whether to save the sufficient statistics generated each iteration}
 
-\item{theta_0}{initial value for the parameters}
+\item{par_prior}{parameters of the prior distributions}
 }
 \value{
 list with the draws for the parameters, the log likelihood, acceptance rate and size of initial susceptible population

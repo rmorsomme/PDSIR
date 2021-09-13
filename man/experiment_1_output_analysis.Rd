@@ -6,6 +6,7 @@
 \usage{
 experiment_1_output_analysis(
   x,
+  iota_dist = "exponential",
   theta_true,
   plot_id = NULL,
   path = NULL,
@@ -14,6 +15,8 @@ experiment_1_output_analysis(
 }
 \arguments{
 \item{x}{object returned by the function experiment_1_proof_of_concept}
+
+\item{iota_dist}{c("exponential", "weibull"); distribution of the infection period}
 
 \item{theta_true}{true value of the parameters}
 

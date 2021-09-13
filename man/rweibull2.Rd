@@ -4,14 +4,14 @@
 \alias{rweibull2}
 \title{Random generator for the truncated weibull distribution}
 \usage{
-rweibull2(n, shape, rate)
+rweibull2(n, shape, lambda)
 }
 \arguments{
 \item{n}{number of random values to generate}
 
 \item{shape}{shape parameter}
 
-\item{rate}{rate parameter}
+\item{lambda}{rate parameter}
 }
 \value{
 vector of n random variables following a truncated weibull distribution

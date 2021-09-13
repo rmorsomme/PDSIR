@@ -4,14 +4,14 @@
 \alias{pweibull2}
 \title{CDF of weibull distribution}
 \usage{
-pweibull2(x, shape, rate, log.p = FALSE, lower.tail = TRUE)
+pweibull2(x, shape, lambda, log.p = FALSE, lower.tail = TRUE)
 }
 \arguments{
 \item{x}{vector of values}
 
 \item{shape}{shape parameter}
 
-\item{rate}{rate parameter}
+\item{lambda}{rate parameter}
 
 \item{log.p}{logical; if TRUE, probabilities p are given as log(p)}
 

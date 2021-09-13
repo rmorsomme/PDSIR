@@ -4,14 +4,14 @@
 \alias{rweibull2_trunc}
 \title{Random generator for the truncated weibull distribution}
 \usage{
-rweibull2_trunc(n, shape, rate, lower, upper)
+rweibull2_trunc(n, shape, lambda, lower, upper)
 }
 \arguments{
 \item{n}{number of infection times to generate}
 
 \item{shape}{shape parameter}
 
-\item{rate}{rate parameter}
+\item{lambda}{rate parameter}
 
 \item{lower}{lower bound}
 

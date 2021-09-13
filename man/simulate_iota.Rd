@@ -4,7 +4,7 @@
 \alias{simulate_iota}
 \title{Simulate infection periods}
 \usage{
-simulate_iota(n, iota_dist, gamma, shape, rate)
+simulate_iota(n, iota_dist, gamma, shape, lambda)
 }
 \arguments{
 \item{n}{number of infection periods to simulate}
@@ -15,7 +15,7 @@ simulate_iota(n, iota_dist, gamma, shape, rate)
 
 \item{shape}{parameter of the weibull distribution}
 
-\item{rate}{parameter of the weibull distribution}
+\item{lambda}{parameter of the weibull distribution}
 }
 \value{
 vector of random infectious durations

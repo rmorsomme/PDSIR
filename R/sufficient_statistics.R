@@ -36,9 +36,9 @@ suff_stat <- function(x, Y, gener, b, return_SI = FALSE) {
   n_J <- sum(recovered)
 
   # Iota
-  iota_recovered  <- tau_J[recovered] - tau_T[recovered]
+  iota_removed    <- tau_J[recovered] - tau_T[recovered]
   iota_infectious <- t_end            - tau_T[infectious]
-  if(any(iota_recovered < 1e-12))  return(list(compatible = FALSE))
+  if(any(iota_removed < 1e-12))  return(list(compatible = FALSE))
 
   # Event time
   tau_T     <- tau_T[infected_during]
@@ -73,7 +73,7 @@ suff_stat <- function(x, Y, gener, b, return_SI = FALSE) {
   SS <- list( # for MCMC
     compatible = TRUE,
     n_T = n_T, n_J = n_J,
-    iota_recovered = iota_recovered, iota_infectious = iota_infectious,
+    iota_removed = iota_removed, iota_infectious = iota_infectious,
     integral_SI = integral_SI, integral_I = integral_I,
     I_tau_T = I_tau_T, S_tau_T = S_tau_T
   )

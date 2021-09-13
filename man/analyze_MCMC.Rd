@@ -7,18 +7,22 @@
 analyze_MCMC(
   MC,
   burnin = 0,
+  iota_dist,
   thin = 1,
   plot_id = NULL,
   path = NULL,
   save_fig = TRUE,
   do_SS = FALSE,
-  theta_true
+  theta_true,
+  Y
 )
 }
 \arguments{
 \item{MC}{output of the MCMC algorithm}
 
 \item{burnin}{number of iterations to discard}
+
+\item{iota_dist}{c("exponential", "weibull"); distribution of the infection period}
 
 \item{thin}{thinning argument for the iterations of the Markov chain}
 
@@ -31,6 +35,8 @@ analyze_MCMC(
 \item{do_SS}{logical; whether to analyze the summary statistics in addition to the parameters}
 
 \item{theta_true}{true value of the parameters}
+
+\item{Y}{observed data}
 }
 \value{
 a list of summary statistics including posterior means, posterior quantiles, effective sample size and the acceptance rate

@@ -1,6 +1,8 @@
 
 #' Creates figures and summary statistics of the output of the Markov chain
 #'
+#' @inheritParams run_DAMCMC
+#'
 #' @param MC output of the MCMC algorithm
 #' @param burnin number of iterations to discard
 #' @param thin thinning argument for the iterations of the Markov chain
@@ -17,9 +19,9 @@
 #' @export
 #'
 analyze_MCMC <- function(
-  MC, burnin = 0, thin = 1,
+  MC, burnin = 0, iota_dist, thin = 1,
   plot_id = NULL, path = NULL, save_fig = TRUE, do_SS = FALSE,
-  theta_true
+  theta_true, Y
   ) {
 
   # Setup
@@ -30,72 +32,78 @@ analyze_MCMC <- function(
   S0            <- MC[["S0"         ]]
   run_time      <- MC[["run_time"   ]]
 
+  S0            <- Y [["S0"         ]]
+
   # Data Wrangling
   theta_tidy <- data.table::rbindlist(theta) %>%
     add_iteration %>%
+    dplyr::mutate(loglik = loglik) %>%
     remove_burnin(burnin) %>%
-    dplyr::filter(.data$Iteration %% thin == 0)
+    dplyr::filter(.data$Iteration %% thin == 0) %>%
+    dplyr::mutate(expected_infection_length = 1 / gamma)
 
   if(do_SS) {
     SS_tidy <- SS %>%
       purrr::map( ~ .[c("n_T", "n_J", "integral_SI", "integral_I")]) %>%
-      data.table::rbindlist  %>%
+      data.table::rbindlist %>%
       add_iteration %>%
       remove_burnin(burnin)  %>%
       dplyr::filter(.data$Iteration %% thin == 0)
-  }
+  } # end-if do_SS
 
   # Figures
   if(save_fig) {
 
-    # Traceplots
-    tp_beta  <- draw_traceplot(theta_tidy, "beta"       , plot_id, path)
-    tp_gamma <- draw_traceplot(theta_tidy, "gamma"      , plot_id, path)
-    tp_R0    <- draw_traceplot(theta_tidy, "R0"         , plot_id, path)
-    if(do_SS) {
-      #tp_nt    <- draw_traceplot(SS_tidy   , "n_T"        , plot_id, path)
-      tp_nj    <- draw_traceplot(SS_tidy   , "n_J"        , plot_id, path)
-      tp_I     <- draw_traceplot(SS_tidy   , "integral_I" , plot_id, path)
-      tp_SI    <- draw_traceplot(SS_tidy   , "integral_SI", plot_id, path)
-    }
-    tp_ll    <- tibble::tibble(loglik = loglik) %>%
-      add_iteration %>%
-      remove_burnin(burnin) %>%
-      draw_traceplot("loglik", plot_id, path)
+    # Traceplots, histograms, ACF
+    vars <- c("beta", "gamma", "R0", "loglik", "expected_infection_length")
+    if(iota_dist == "weibull") vars <- c(vars, "lambda")
+    if(do_SS) vars <- c(vars, c("n_J", "integral_I", "integral_SI"))
 
-    # Histograms
-    hist_beta  <- draw_histogram(theta_tidy, "beta"       , plot_id, path)
-    hist_gamma <- draw_histogram(theta_tidy, "gamma"      , plot_id, path)
-    hist_R0    <- draw_histogram(theta_tidy, "R0"         , plot_id, path)
-    if(do_SS) {
-      hist_nt    <- draw_histogram(SS_tidy   , "n_T"        , plot_id, path)
-      hist_nj    <- draw_histogram(SS_tidy   , "n_J"        , plot_id, path)
-      hist_I     <- draw_histogram(SS_tidy   , "integral_I" , plot_id, path)
-      hist_SI    <- draw_histogram(SS_tidy   , "integral_SI", plot_id, path)
-    }
+    for(var in vars)
+      draw_tp_hist_acf(theta_tidy, var, plot_id, path)
 
     # Joint Densities
-    den_bg     <- draw_density_2d(theta_tidy, "beta", "gamma", plot_id, path)
-    den_Rg     <- draw_density_2d(theta_tidy, "R0"  , "gamma", plot_id, path)
-    den_Rb     <- draw_density_2d(theta_tidy, "R0"  , "beta" , plot_id, path)
+    vars_x <- c("R0"  , "R0"   , "beta" )
+    vars_y <- c("beta", "gamma", "gamma")
+    if(iota_dist == "weibull"){
+      vars_x <- c(vars_x, "beta"  , "R0"    )
+      vars_y <- c(vars_y, "lambda", "lambda")
+    }
+
+    for(i in 1 : length(vars_x))
+      draw_density_2d(theta_tidy, vars_x[i], vars_y[i], plot_id, path)
+
     # draw_hpd_2d(theta_tidy, "beta", "gamma", beta_true, gamma_true, plot_id) # too buggy, need to find a better alternative
 
-    # ACF
-    acf_beta  <- draw_acf(theta_tidy, "beta" , plot_id, path = path)
-    acf_gamma <- draw_acf(theta_tidy, "gamma", plot_id, path = path)
-    acf_R0    <- draw_acf(theta_tidy, "R0"   , plot_id, path = path)
+  } # end-if save_fig
 
-  }
 
   # Summary Statistics
+  theta_true_df   <- theta_true %>%
+    complete_theta(iota_dist, S0) %>%
+    {tibble::tibble(var = names(.), theta_true = as.double(.))}
+
+  post_mean_quant_cover <- theta_tidy %>%
+    dplyr::select(- .data$Iteration, - .data$loglik) %>%
+    {tibble::tibble(
+    var  = colnames(.),
+    mean = colMeans(.),
+    quant_low = purrr::map_dbl(., stats::quantile, probs = 0.1),
+    quant_upp = purrr::map_dbl(., stats::quantile, probs = 0.9)
+  )} %>%
+    dplyr::left_join(theta_true_df, by = "var") %>%
+    dplyr::mutate(
+      cover = list(.data$theta_true, .data$quant_low, .data$quant_upp) %>%
+        purrr::pmap_lgl(dplyr::between)
+      )
+
   out <- list(
-    run_time    = run_time,
-    post_mean   = colMeans(dplyr::select(theta_tidy, - .data$Iteration)),
-    quant_05    = dplyr::select(theta_tidy, - .data$Iteration) %>% purrr::map_dbl(stats::quantile, probs = 0.05),
-    quant_95    = dplyr::select(theta_tidy, - .data$Iteration) %>% purrr::map_dbl(stats::quantile, probs = 0.95),
-    rate_accept = rate_accept,
-    ESS         = coda::effectiveSize(coda::mcmc(theta_tidy))
+    run_time         = run_time,
+    mean_quant_cover = post_mean_quant_cover,
+    rate_accept      = rate_accept,
+    ESS              = coda::effectiveSize(coda::mcmc(theta_tidy))
   )
+
   out[["ESS_sec"]] <- out[["ESS"]] / run_time
 
   return(out)

@@ -37,7 +37,7 @@ draw_trajectories <- function(
     ggplot2::theme(text = ggplot2::element_text(size = 25))
 
   ggplot2::ggsave(
-    paste(plot_id, "trajectories.jpeg", sep = "_"),
+    paste0(plot_id, "_trajectories.jpeg"),
     path = path, width = 1.5 * 1.61803, height = 1, scale = 5
   )
 

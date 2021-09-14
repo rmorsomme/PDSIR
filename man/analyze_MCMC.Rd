@@ -20,13 +20,13 @@ analyze_MCMC(
 \arguments{
 \item{MC}{output of the MCMC algorithm}
 
-\item{burnin}{number of iterations to discard}
+\item{burnin}{number of iterations to discard, the default value NULL will discard half of the draws.}
 
 \item{iota_dist}{c("exponential", "weibull"); distribution of the infection period}
 
 \item{thin}{thinning argument for the iterations of the Markov chain}
 
-\item{plot_id}{name file for the figure}
+\item{plot_id}{name file for the figure(s)}
 
 \item{path}{directory in which to save the figure}
 

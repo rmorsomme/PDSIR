@@ -15,27 +15,28 @@
 #' @param b parameter of the generalized SIR
 #' @param path directory in which to save the figure
 #' @param theta_0_factor factors by which the true value of the parameters is multiplied to initialize the Markov chain
-#' @param plot_id name file for the figures
+#' @param plot_id name file for the figure(s)
+#' @param save_fig logical; whether to save the figures generated
 #'
 #' @return list containing the parameters, observed data, Markov chain and run time of the algorithm
 #' @export
 #'
 experiment_1_proof_of_concept <- function(
-  S0 = 1e4, I0 = 1e1, theta = list(R0 = 2.5, lambda = 1, shape = 1, gamma = 1),
+  S0 = 1e3, I0 = 1e1, theta = list(R0 = 2.5, lambda = 1, shape = 1, gamma = 1),
   t_end = 6, K = 10,
-  N = 1e4, thin = 1, rho = 1,
+  N = 1e4, thin = 1, rho = 1/4,
   param = "bR", approx = "ldp",
   iota_dist = "exponential",
   gener = FALSE, b = 1/2,
   theta_0_factor = 1,
-  path = NULL, plot_id
+  path = NULL, plot_id, save_fig = TRUE
   ) {
 
   theta <- complete_theta(theta, iota_dist, S0)
 
   # Observed data
   SIR   <- simulate_SEM(S0, I0, t_end, theta, iota_dist, gener, b)
-  draw_trajectories(SIR, plot_id, path, t_end, type = "SIR")
+  if(save_fig)  draw_trajectories(SIR, plot_id, path, t_end, type = "SIR")
   Y     <- observed_data(SIR, K)
 
   # run a long chain
@@ -67,7 +68,8 @@ experiment_1_proof_of_concept <- function(
 #' @export
 #'
 experiment_1_output_analysis <- function(
-  x, iota_dist = "exponential", theta_true, plot_id = NULL, path = NULL, burnin = 0
+  x, iota_dist = "exponential", theta_true, burnin = 0,
+  plot_id = NULL, path = NULL, save_fig = TRUE
   ) {
 
   theta <- x[["theta"]]
@@ -77,14 +79,14 @@ experiment_1_output_analysis <- function(
   summary_no_burn <- analyze_MCMC(
     MC, burnin = 0, iota_dist,
     plot_id = paste0(plot_id, "_no_burn"), path = path,
-    theta_true = theta, Y = Y
+    theta_true = theta, Y = Y, save_fig = save_fig
     )
 
   if(is.null(burnin))  burnin <- length(MC[["theta"]])/2
   summary_burn <- analyze_MCMC(
     MC, burnin, iota_dist,
     plot_id = paste0(plot_id, "_burn"), path = path,
-    theta_true = theta, Y = Y
+    theta_true = theta, Y = Y, save_fig = save_fig
     )
 
   out <- list(summary_no_burn = summary_no_burn, summary_burn = summary_burn)
@@ -99,7 +101,6 @@ experiment_1_output_analysis <- function(
 #' @inheritParams experiment_1_output_analysis
 #'
 #' @param Ks vector of numbers of time intervals to consider for the PD-SIR process
-#' @param
 #'
 #' @return figures comparing the trajectories of the PDSIR and SIR for different value K
 #' @export

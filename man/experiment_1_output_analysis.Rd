@@ -8,9 +8,10 @@ experiment_1_output_analysis(
   x,
   iota_dist = "exponential",
   theta_true,
+  burnin = 0,
   plot_id = NULL,
   path = NULL,
-  burnin = 0
+  save_fig = TRUE
 )
 }
 \arguments{
@@ -20,11 +21,13 @@ experiment_1_output_analysis(
 
 \item{theta_true}{true value of the parameters}
 
-\item{plot_id}{name file for the figures}
+\item{burnin}{number of iterations to discard, the default value NULL will discard half of the draws.}
+
+\item{plot_id}{name file for the figure(s)}
 
 \item{path}{directory in which to save the figure}
 
-\item{burnin}{number of iterations to discard, the default value NULL will discard half of the draws.}
+\item{save_fig}{logical; whether to save the figures generated}
 }
 \value{
 list of summary statistics with and without burn-in

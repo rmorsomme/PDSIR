@@ -11,7 +11,7 @@ draw_acf(df, var, plot_id, path = NULL, lag_max = 1500)
 
 \item{var}{variable under consideration}
 
-\item{plot_id}{name file for the figure}
+\item{plot_id}{name file for the figure(s)}
 
 \item{path}{directory in which to save the figure}
 

@@ -17,7 +17,7 @@ draw_hpd_2d(df, var1, var2, true1, true2, plot_id, path = NULL, levels)
 
 \item{true2}{true value of the parameter corresponding to variable 2}
 
-\item{plot_id}{name file for the figure}
+\item{plot_id}{name file for the figure(s)}
 
 \item{path}{directory in which to save the figure}
 

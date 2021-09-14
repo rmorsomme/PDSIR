@@ -17,8 +17,8 @@ run_DAMCMC(
   theta_0,
   print_i = FALSE,
   save_SS = FALSE,
-  par_prior = list(a_beta = 0.1, b_beta = 1, a_gamma = 0.1, b_gamma = 0.1, a_R0 = 2,
-    b_R0 = 0.002, a_lambda = 0.1, b_lambda = 0.1)
+  par_prior = list(a_beta = 0.1, b_beta = 1, a_gamma = 1, b_gamma = 1, a_R0 = 2, b_R0 =
+    0.002, a_lambda = 0.1, b_lambda = 0.1)
 )
 }
 \arguments{

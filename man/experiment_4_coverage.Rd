@@ -5,9 +5,9 @@
 \title{Experiment 4: estimate the coverage rate of the DA-MCMC algorithm}
 \usage{
 experiment_4_coverage(
-  S0s = c(100, 500, 1000, 5000),
+  S0s = c(100, 500, 1000),
   I0 = 10,
-  R0s = c(2, 2.5, 3, 3.5),
+  R0s = c(2, 2.5, 3),
   gamma = 1,
   t_end = 6,
   K = 10,
@@ -20,7 +20,6 @@ experiment_4_coverage(
   gener = FALSE,
   b = 1/2,
   theta_0_factor = 1,
-  path = NULL,
   m = 100
 )
 }
@@ -54,8 +53,6 @@ experiment_4_coverage(
 \item{b}{parameter of the generalized SIR}
 
 \item{theta_0_factor}{factors by which the true value of the parameters is multiplied to initialize the Markov chain}
-
-\item{path}{directory in which to save the figure}
 
 \item{m}{number of independent iterations to estimate the coverage rate}
 }

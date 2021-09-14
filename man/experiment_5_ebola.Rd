@@ -42,7 +42,7 @@ experiment_5_ebola(
 
 \item{path}{directory in which to save the figure}
 
-\item{plot_id}{name file for the figures}
+\item{plot_id}{name file for the figure(s)}
 }
 \value{
 list containing the parameters, observed data, Markov chain and run time of the algorithm

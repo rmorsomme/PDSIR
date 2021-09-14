@@ -9,7 +9,7 @@ draw_trajectories(SEM, plot_id = NULL, path, t_end = 10, type = "SIR")
 \arguments{
 \item{SEM}{list corresponding to stochastic epidemic process}
 
-\item{plot_id}{name file for the figure}
+\item{plot_id}{name file for the figure(s)}
 
 \item{path}{directory in which to save the figure}
 

@@ -5,14 +5,14 @@
 \title{Experiment 1: Proof of concept}
 \usage{
 experiment_1_proof_of_concept(
-  S0 = 10000,
+  S0 = 1000,
   I0 = 10,
   theta = list(R0 = 2.5, lambda = 1, shape = 1, gamma = 1),
   t_end = 6,
   K = 10,
   N = 10000,
   thin = 1,
-  rho = 1,
+  rho = 1/4,
   param = "bR",
   approx = "ldp",
   iota_dist = "exponential",
@@ -20,7 +20,8 @@ experiment_1_proof_of_concept(
   b = 1/2,
   theta_0_factor = 1,
   path = NULL,
-  plot_id
+  plot_id,
+  save_fig = TRUE
 )
 }
 \arguments{
@@ -54,7 +55,9 @@ experiment_1_proof_of_concept(
 
 \item{path}{directory in which to save the figure}
 
-\item{plot_id}{name file for the figures}
+\item{plot_id}{name file for the figure(s)}
+
+\item{save_fig}{logical; whether to save the figures generated}
 }
 \value{
 list containing the parameters, observed data, Markov chain and run time of the algorithm

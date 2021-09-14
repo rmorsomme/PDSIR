@@ -20,7 +20,7 @@ draw_density_2d(
 
 \item{var2}{variable to plot on the y-axis}
 
-\item{plot_id}{name file for the figure}
+\item{plot_id}{name file for the figure(s)}
 
 \item{path}{directory in which to save the figure}
 

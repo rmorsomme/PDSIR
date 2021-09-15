@@ -24,7 +24,7 @@
 experiment_1_proof_of_concept <- function(
   S0 = 1e3, I0 = 1e1, theta = list(R0 = 2.5, lambda = 1, shape = 1, gamma = 1),
   t_end = 6, K = 10,
-  N = 1e4, thin = 1, rho = 1/4,
+  N = 1e3, thin = 1, rho = 1/4,
   param = "bR", approx = "ldp",
   iota_dist = "exponential",
   gener = FALSE, b = 1/2,

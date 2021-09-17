@@ -16,10 +16,11 @@
 #' @export
 #'
 analyze_MCMC <- function(
-  MC, burnin = 0, iota_dist, thin = 1,
+  MC, burnin = 0, thin = 1, n_max = NULL, iota_dist,
   plot_id = NULL, path = NULL, save_fig = TRUE, do_SS = FALSE,
   theta_true, Y
   ) {
+
 
   # Setup
   theta         <- MC[["theta"      ]]
@@ -31,10 +32,13 @@ analyze_MCMC <- function(
 
   S0            <- Y [["S0"         ]]
 
+  if(is.null(n_max)) n_max <- length(theta)
+
   # Data Wrangling
   theta_tidy <- data.table::rbindlist(theta) %>%
     add_iteration %>%
     dplyr::mutate(loglik = loglik) %>%
+    dplyr::filter(.data$Iteration < n_max) %>%
     remove_burnin(burnin) %>%
     dplyr::filter(.data$Iteration %% thin == 0) %>%
     dplyr::mutate(expected_infection_length = 1 / gamma)

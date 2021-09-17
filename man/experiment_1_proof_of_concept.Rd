@@ -10,7 +10,7 @@ experiment_1_proof_of_concept(
   theta = list(R0 = 2.5, lambda = 1, shape = 1, gamma = 1),
   t_end = 6,
   K = 10,
-  N = 10000,
+  N = 1000,
   thin = 1,
   rho = 1/4,
   param = "bR",

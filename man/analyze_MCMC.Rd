@@ -7,8 +7,9 @@
 analyze_MCMC(
   MC,
   burnin = 0,
-  iota_dist,
   thin = 1,
+  n_max = NULL,
+  iota_dist,
   plot_id = NULL,
   path = NULL,
   save_fig = TRUE,
@@ -22,9 +23,11 @@ analyze_MCMC(
 
 \item{burnin}{number of iterations to discard, the default value NULL will discard half of the draws.}
 
-\item{iota_dist}{c("exponential", "weibull"); distribution of the infection period}
-
 \item{thin}{thinning argument for the iterations of the Markov chain}
+
+\item{n_max}{last draw to take into account}
+
+\item{iota_dist}{c("exponential", "weibull"); distribution of the infection period}
 
 \item{plot_id}{name file for the figure(s)}
 

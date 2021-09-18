@@ -63,6 +63,7 @@ experiment_1_proof_of_concept <- function(
 #' @param x object returned by the function experiment_1_proof_of_concept
 #' @param burnin number of iterations to discard, the default value NULL will discard half of the draws.
 #' @param theta_true true value of the parameters
+#' @param n_max last draw to take into account
 #'
 #' @return list of summary statistics with and without burn-in
 #' @export

@@ -12,7 +12,7 @@ experiment_1_proof_of_concept(
   K = 10,
   N = 1000,
   thin = 1,
-  rho = 1/4,
+  rho = 1/3,
   param = "bR",
   approx = "ldp",
   iota_dist = "exponential",

@@ -2,10 +2,11 @@
 #' Line plots for experiment 3
 #'
 #' @inheritParams experiment_3_acceptance_vs_rho
+#' @inheritParams experiment_1_proof_of_concept
+#'
 #' @param results df of results from experiment 3
 #' @param var variable of the df results to visualize
 #' @param lab_y label of y-axis
-#' @param plot_id name file for the figure
 #'
 #' @return saves a figure
 #' @export

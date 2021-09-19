@@ -36,7 +36,7 @@ experiment_1_proof_of_concept <- function(
 
   # Observed data
   SIR   <- simulate_SEM(S0, I0, t_end, theta, iota_dist, gener, b)
-  if(save_fig)  draw_trajectories(SIR, plot_id, path, t_end, type = "SIR")
+  if(save_fig)  draw_trajectories(SIR, plot_id, path, t_end)
   Y     <- observed_data(SIR, K)
 
   # run a long chain
@@ -153,10 +153,8 @@ experiment_3_acceptance_vs_rho <- function(
   t_end = 6, K = 20,
   rhos = c(0.02, 0.05, 0.1, 0.25, 0.5, 1),
   N = 1e3, thin = 1,
-  iota_dist = "exponential",
-  path
+  iota_dist = "exponential"
   ) {
-
 
   stopifnot(length(S0s) == length(R0s))
 
@@ -167,6 +165,8 @@ experiment_3_acceptance_vs_rho <- function(
     ESSsec_beta = numeric(), ESSsec_gamma = numeric(), ESSsec_R0 = numeric()
     )
 
+  df_SEM <- tibble::tibble(S0 = numeric(), SEM = list(), t_end = numeric())
+
   for(k in 1 : length(S0s)) {
 
     # Parameters
@@ -174,9 +174,9 @@ experiment_3_acceptance_vs_rho <- function(
     theta <- list(R0 = R0s[k], gamma = gamma)
 
     # SEM
-    SEM  <- simulate_SEM(S0, I0, t_end, theta)
-    draw_trajectories(SEM, plot_id = paste0("E3_S0=", S0), path, t_end)
-    Y    <- observed_data(SEM, K)
+    SEM    <- simulate_SEM(S0, I0, t_end, theta)
+    df_SEM <- tibble::add_row(df_SEM, S0 = S0, SEM = list(SEM), t_end = t_end)
+    Y      <- observed_data(SEM, K)
 
     for(rho in rhos) {
 
@@ -184,8 +184,9 @@ experiment_3_acceptance_vs_rho <- function(
       print(paste0(S0, " - ", rho, ": ", Sys.time()))
 
       summary  <- analyze_MCMC(
-        MC, burnin = min(N / 2, 1e4), iota_dist, thin,
-        plot_id = paste0("E3_S0=", S0, "_rho=", rho), path,
+        MC, burnin = min(N / 2, 1e4), thin, n_max = NULL,
+        iota_dist,
+        plot_id = paste0("E3_S0=", S0, "_rho=", rho),
         save_fig = FALSE,
         theta_true = theta,
         Y = Y
@@ -209,10 +210,25 @@ experiment_3_acceptance_vs_rho <- function(
 
   } # end-for S0
 
-  # Output
-  readr::write_csv(results, paste0(path, "/E3.csv"))
+  return(list(results = results, df_SEM = df_SEM))
 
-  # Figures
+}
+
+
+experiment_3_output_analysis <- function(output_E3, path) {
+
+  df_SEM  <- output_E3[["df_SEM" ]]
+  results <- output_E3[["results"]]
+
+  # Trajectories
+  purrr::pwalk(
+    df_SEM,
+    function(S0, SEM, t_end) {
+      draw_trajectories(SEM, paste0("E3_S0=", S0), path, t_end)
+    }
+  )
+
+  # Mixing
   draw_E3(results, path, "accept_rate" , "Acceptance Rate"  , "accept"     )
   draw_E3(results, path, "run_time"    , "Run Time"         , "runtime"    )
   draw_E3(results, path, "ESS_beta"    , "ESS for beta"     , "ESSbeta"    )
@@ -221,6 +237,7 @@ experiment_3_acceptance_vs_rho <- function(
   draw_E3(results, path, "ESSsec_beta" , "ESS/sec for beta" , "ESSsecbeta" )
   draw_E3(results, path, "ESSsec_gamma", "ESS/sec for gamma", "ESSsecgamma")
   draw_E3(results, path, "ESSsec_R0"   , "ESS/sec for R0"   , "ESSsecR0"   )
+
 
 }
 

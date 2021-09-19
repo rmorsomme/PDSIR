@@ -14,8 +14,7 @@ experiment_3_acceptance_vs_rho(
   rhos = c(0.02, 0.05, 0.1, 0.25, 0.5, 1),
   N = 1000,
   thin = 1,
-  iota_dist = "exponential",
-  path
+  iota_dist = "exponential"
 )
 }
 \arguments{
@@ -38,8 +37,6 @@ experiment_3_acceptance_vs_rho(
 \item{thin}{thinning parameter for the Markov chain}
 
 \item{iota_dist}{c("exponential", "weibull"); distribution of the infection period}
-
-\item{path}{directory in which to save the figure}
 }
 \value{
 saves figures and a df summaryzing the results

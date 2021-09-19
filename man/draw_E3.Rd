@@ -15,7 +15,7 @@ draw_E3(results, path, var, lab_y, plot_id)
 
 \item{lab_y}{label of y-axis}
 
-\item{plot_id}{name file for the figure}
+\item{plot_id}{name file for the figure(s)}
 }
 \value{
 saves a figure

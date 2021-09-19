@@ -36,7 +36,10 @@ Suggests:
     emdbook,
     testthat (>= 3.0.0),
     graphics,
-    ggpubr
+    ggpubr,
+    knitr,
+    rmarkdown
 Config/testthat/edition: 3
 URL: https://github.com/rmorsomme/PDSIR, google.com
 BugReports: https://github.com/rmorsomme/PDSIR/issues
+VignetteBuilder: knitr

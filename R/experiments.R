@@ -56,7 +56,7 @@ experiment_1_proof_of_concept <- function(
 
 
 
-#' Analyze output of MCMC run
+#' Analyze output of MCMC run from Experiment 1
 #'
 #' @inheritParams experiment_1_proof_of_concept
 #'
@@ -215,6 +215,13 @@ experiment_3_acceptance_vs_rho <- function(
 }
 
 
+#' Analyze output of MCMC runs from Experiment 3
+#'
+#' @inheritParams experiment_1_proof_of_concept
+#' @param output_E3 output from Experiment 3
+#'
+#' @return figures of trajectories and output of Experiment 3
+#' @export
 experiment_3_output_analysis <- function(output_E3, path) {
 
   df_SEM  <- output_E3[["df_SEM" ]]

@@ -2,7 +2,7 @@
 % Please edit documentation in R/experiments.R
 \name{experiment_1_output_analysis}
 \alias{experiment_1_output_analysis}
-\title{Analyze output of MCMC run}
+\title{Analyze output of MCMC run from Experiment 1}
 \usage{
 experiment_1_output_analysis(
   x,
@@ -39,5 +39,5 @@ experiment_1_output_analysis(
 list of summary statistics with and without burn-in
 }
 \description{
-Analyze output of MCMC run
+Analyze output of MCMC run from Experiment 1
 }

@@ -15,7 +15,8 @@ analyze_MCMC(
   save_fig = TRUE,
   do_SS = FALSE,
   theta_true,
-  Y
+  Y,
+  coverage = TRUE
 )
 }
 \arguments{
@@ -40,6 +41,8 @@ analyze_MCMC(
 \item{theta_true}{true value of the parameters}
 
 \item{Y}{observed data}
+
+\item{coverage}{whether to determine if the credible intervals contain the true value of the parameters}
 }
 \value{
 a list of summary statistics including posterior means, posterior quantiles, effective sample size and the acceptance rate

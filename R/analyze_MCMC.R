@@ -8,6 +8,7 @@
 #' @param thin thinning argument for the iterations of the Markov chain
 #' @param do_SS logical; whether to analyze the summary statistics in addition to the parameters
 #' @param theta_true true value of the parameters
+#' @param coverage whether to determine if the credible intervals contain the true value of the parameters
 #'
 #' @importFrom dplyr %>%
 #' @importFrom rlang .data
@@ -18,7 +19,7 @@
 analyze_MCMC <- function(
   MC, burnin = 0, thin = 1, n_max = NULL, iota_dist,
   plot_id = NULL, path = NULL, save_fig = TRUE, do_SS = FALSE,
-  theta_true, Y
+  theta_true, Y, coverage = TRUE
   ) {
 
 
@@ -78,34 +79,49 @@ analyze_MCMC <- function(
 
   } # end-if save_fig
 
-
-  # Summary Statistics
-  theta_true_df   <- theta_true %>%
-    complete_theta(iota_dist, S0) %>%
-    {tibble::tibble(var = names(.), theta_true = as.double(.))}
-
-  post_mean_quant_cover <- theta_tidy %>%
+  # Posterior mean
+  post_mean <- theta_tidy %>%
     dplyr::select(- .data$Iteration, - .data$loglik) %>%
     {tibble::tibble(
-    var  = colnames(.),
-    mean = colMeans(.),
-    quant_low = purrr::map_dbl(., stats::quantile, probs = 0.1),
-    quant_upp = purrr::map_dbl(., stats::quantile, probs = 0.9)
-  )} %>%
-    dplyr::left_join(theta_true_df, by = "var") %>%
-    dplyr::mutate(
-      cover = list(.data$theta_true, .data$quant_low, .data$quant_upp) %>%
-        purrr::pmap_lgl(dplyr::between)
-      )
+      var  = colnames(.),
+      mean = colMeans(.)
+    )}
 
+  # Output
   out <- list(
-    run_time         = run_time,
-    mean_quant_cover = post_mean_quant_cover,
-    rate_accept      = rate_accept,
-    ESS              = coda::effectiveSize(coda::mcmc(theta_tidy))
+    run_time    = run_time,
+    post_stat   = post_mean,
+    rate_accept = rate_accept,
+    ESS         = coda::effectiveSize(coda::mcmc(theta_tidy))
   )
 
   out[["ESS_sec"]] <- out[["ESS"]] / run_time
+
+
+  # Coverage
+  if(coverage){
+
+    theta_true_df   <- theta_true %>%
+      complete_theta(iota_dist, S0) %>%
+      {tibble::tibble(var = names(.), theta_true = as.double(.))}
+
+    post_mean_quant_cover <- theta_tidy %>%
+      dplyr::select(- .data$Iteration, - .data$loglik) %>%
+      {tibble::tibble(
+        var  = colnames(.),
+        mean = colMeans(.),
+        quant_low = purrr::map_dbl(., stats::quantile, probs = 0.1),
+        quant_upp = purrr::map_dbl(., stats::quantile, probs = 0.9)
+      )} %>%
+      dplyr::left_join(theta_true_df, by = "var") %>%
+      dplyr::mutate(
+        cover = list(.data$theta_true, .data$quant_low, .data$quant_upp) %>%
+          purrr::pmap_lgl(dplyr::between)
+      )
+
+    out[["post_stat"]] <- post_mean_quant_cover
+
+  }
 
   return(out)
 

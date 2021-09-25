@@ -14,9 +14,7 @@ experiment_5_ebola(
   approx = "ldp",
   iota_dist = "exponential",
   gener = FALSE,
-  b = 1/2,
-  path = NULL,
-  plot_id = "E5"
+  b = 1/2
 )
 }
 \arguments{
@@ -39,10 +37,6 @@ experiment_5_ebola(
 \item{gener}{logical; whether to use the generalized SIR of Severo (1972)}
 
 \item{b}{parameter of the generalized SIR}
-
-\item{path}{directory in which to save the figure}
-
-\item{plot_id}{name file for the figure(s)}
 }
 \value{
 list containing the parameters, observed data, Markov chain and run time of the algorithm

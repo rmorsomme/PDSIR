@@ -238,12 +238,12 @@ experiment_3_output_analysis <- function(output_E3, path) {
   # Mixing
   draw_E3(results, path, "accept_rate" , "Acceptance Rate"  , "accept"     )
   draw_E3(results, path, "run_time"    , "Run Time"         , "runtime"    )
-  draw_E3(results, path, "ESS_beta"    , "ESS for beta"     , "ESSbeta"    )
-  draw_E3(results, path, "ESS_gamma"   , "ESS for gamma"    , "ESSgamma"   )
-  draw_E3(results, path, "ESS_R0"      , "ESS for R0"       , "ESSR0"      )
-  draw_E3(results, path, "ESSsec_beta" , "ESS/sec for beta" , "ESSsecbeta" )
-  draw_E3(results, path, "ESSsec_gamma", "ESS/sec for gamma", "ESSsecgamma")
-  draw_E3(results, path, "ESSsec_R0"   , "ESS/sec for R0"   , "ESSsecR0"   )
+  draw_E3_facet(results, path, "ESS_beta"    , "ESS for beta"     , "ESSbeta"    )
+  draw_E3_facet(results, path, "ESS_gamma"   , "ESS for gamma"    , "ESSgamma"   )
+  draw_E3_facet(results, path, "ESS_R0"      , "ESS for R0"       , "ESSR0"      )
+  draw_E3_facet(results, path, "ESSsec_beta" , "ESS/sec for beta" , "ESSsecbeta" )
+  draw_E3_facet(results, path, "ESSsec_gamma", "ESS/sec for gamma", "ESSsecgamma")
+  draw_E3_facet(results, path, "ESSsec_R0"   , "ESS/sec for R0"   , "ESSsecR0"   )
 
 
 }
@@ -326,8 +326,7 @@ experiment_5_ebola <- function(
   N = 1e5, thin = 1, rho = 1,
   param = "bg", approx = "ldp",
   iota_dist = "exponential",
-  gener = FALSE, b = 1/2,
-  path = NULL, plot_id = "E5"
+  gener = FALSE, b = 1/2
 ) {
 
   #
@@ -376,12 +375,27 @@ experiment_5_ebola <- function(
     thin, theta_0
   )
 
-  summary <- analyze_MCMC(
-    MC, burnin = min(1e4, N/2), iota_dist,
-    plot_id = plot_id, path = path,
-    theta_true = theta_0, Y = Y_ebola # TODO: add option to opt-out of theta_true
-  )
 
-  return(list(Y = Y_ebola, MC = MC, summary = summary))
+
+  return(list(Y = Y_ebola, MC = MC))
 
 }
+
+experiment_5_output <- function(
+  output_E5, iota_dist = "exponential", path, plot_id = "E5",
+  burnin = 5e4, thin = 1, n_max = NULL
+  ) {
+
+  MC <- output_E5[["MC"]]
+  Y  <- output_E5[["Y" ]]
+
+  summary <- analyze_MCMC(
+    MC, burnin, thin, n_max, iota_dist,
+    plot_id = plot_id, path = path,
+    Y = Y, coverage = FALSE
+  )
+
+  return(summary)
+
+}
+

@@ -2,18 +2,18 @@
 % Please edit documentation in R/experiments.R
 \name{experiment_4_output_analysis}
 \alias{experiment_4_output_analysis}
-\title{Title}
+\title{Analyze output from Experiment 4}
 \usage{
 experiment_4_output_analysis(output_E4, path)
 }
 \arguments{
-\item{output_E4}{output from E4}
+\item{output_E4}{output from Experiment 4}
 
-\item{path}{path for figures}
+\item{path}{directory in which to save the figure}
 }
 \value{
-
+side-by-side boxplots of posterior means and summary of Experiment 4
 }
 \description{
-Title
+Analyze output from Experiment 4
 }

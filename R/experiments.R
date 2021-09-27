@@ -65,7 +65,7 @@ experiment_1_proof_of_concept <- function(
 #' @param theta_true true value of the parameters
 #' @param n_max last draw to take into account
 #'
-#' @return list of summary statistics with and without burn-in
+#' @return figures and list of summary statistics with and without burn-in
 #' @export
 #'
 experiment_1_output_analysis <- function(
@@ -316,6 +316,47 @@ experiment_4_coverage <- function(
 }
 
 
+#' Analyze output from Experiment 4
+#'
+#' @inheritParams experiment_1_proof_of_concept
+#' @param output_E4 output from Experiment 4
+#'
+#' @return side-by-side boxplots of posterior means and summary of Experiment 4
+#' @export
+#'
+experiment_4_output_analysis <- function(output_E4, path) {
+
+  df <- output_E4 %>%
+    dplyr::filter(.data$var != "expected_infection_length")
+
+  summary_E4 <- df %>%
+    dplyr::group_by(.data$var) %>%
+    dplyr::summarize(
+      cover        = mean(.data$cover),
+      mean_overall = mean(.data$mean),
+      mean_sd      = stats::sd(.data$mean)
+    )
+
+  df %>%
+    ggplot2::ggplot(ggplot2::aes(x = .data$mean)) +
+    ggplot2::geom_boxplot() +
+    ggplot2::facet_grid(.~.data$var, scales = "free") +
+    ggplot2::theme(
+      axis.text.y  = ggplot2::element_blank(),
+      axis.ticks.y = ggplot2::element_blank()
+    )
+
+  ggplot2::ggsave(
+    "E4_boxplots.jpg",
+    path = path, width = 1.61803, height = 1/3, scale = 5
+  )
+
+  return(summary_E4)
+
+}
+
+
+
 #' Experiment 5: Analysis of the Ebola data
 #'
 #' @inheritParams experiment_1_proof_of_concept
@@ -384,6 +425,17 @@ experiment_5_ebola <- function(
 
 }
 
+
+#' Analyze output of MCMC run from Experiment 5
+#'
+#' @inheritParams experiment_1_output_analysis
+#' @inheritParams experiment_5_ebola
+#'
+#' @param output_E5 object returned by the function experiment_5_ebola
+#'
+#' @return figures and list of summary statistics
+#' @export
+#'
 experiment_5_output <- function(
   output_E5, iota_dist = "exponential", path, plot_id = "E5",
   burnin = 5e4, thin = 1, n_max = NULL
@@ -402,34 +454,4 @@ experiment_5_output <- function(
 
 }
 
-#' Title
-#'
-#' @param output_E4 output from E4
-#' @param path path for figures
-#'
-#' @return
-#' @export
-#'
-experiment_4_output_analysis <- function(output_E4, path) {
 
-  # df <- output_E4 %>%
-  #   dplyr::filter(var != "expected_infection_length")
-  #
-  # summary_E3 <- df %>%
-  #   dplyr::group_by(var) %>%
-  #   dplyr::summarize(
-  #     cover = mean(cover),
-  #     mean_overall = mean(mean),
-  #     mean_sd      = sd(mean)
-  #     )
-  #
-  # df %>%
-  #   ggplot2::ggplot(ggplot2::aes(y = .data$mean)) +
-  #   ggplot2::geom_boxplot() +
-  #   ggplot2::facet_grid(.~.data$var, scales = "free") +
-  #   ggplot2::theme(
-  #     axis.text.x  = ggplot2::element_blank(),
-  #     axis.ticks.x = ggplot2::element_blank()
-  #     )
-
-}

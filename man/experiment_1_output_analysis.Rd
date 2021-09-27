@@ -36,7 +36,7 @@ experiment_1_output_analysis(
 \item{save_fig}{logical; whether to save the figures generated}
 }
 \value{
-list of summary statistics with and without burn-in
+figures and list of summary statistics with and without burn-in
 }
 \description{
 Analyze output of MCMC run from Experiment 1

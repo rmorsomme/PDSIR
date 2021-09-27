@@ -245,7 +245,6 @@ experiment_3_output_analysis <- function(output_E3, path) {
   draw_E3_facet(results, path, "ESSsec_gamma", "ESS/sec for gamma", "ESSsecgamma")
   draw_E3_facet(results, path, "ESSsec_R0"   , "ESS/sec for R0"   , "ESSsecR0"   )
 
-
 }
 
 #' Experiment 4: estimate the coverage rate of the DA-MCMC algorithm
@@ -290,19 +289,23 @@ experiment_4_coverage <- function(
       MC  <- run_DAMCMC(Y, N, rho, theta_0 = theta)
 
       summary  <- analyze_MCMC(
-        MC, burnin = min(N / 2, 1e4), iota_dist, thin,
-        plot_id = paste0("E3_S0=", S0, "_rho=", rho),
+        MC, burnin = min(N / 2, 1e4), thin, n_max = NULL,
+        iota_dist,
+       # plot_id = paste0("E3_S0=", S0, "_rho=", rho),
         save_fig = FALSE,
         theta_true = theta,
-        Y = Y
+        Y = Y,
+        coverage = TRUE
       )
 
       results <- rbind(
         results,
-        summary[["mean_quant_cover"]] %>%
-          dplyr::select(.data$var, .data$cover) %>%
+        summary[["post_stat"]] %>%
+          dplyr::select(.data$var, .data$cover, .data$mean) %>%
           dplyr::mutate(iteration = i, S0 = S0) %>%
-          dplyr::select(S0, .data$iteration, .data$var, .data$cover)
+          dplyr::select(
+            .data$S0, .data$iteration, .data$var, .data$cover, .data$mean
+            )
       )
 
     } # end-for iteration
@@ -399,3 +402,34 @@ experiment_5_output <- function(
 
 }
 
+#' Title
+#'
+#' @param output_E4 output from E4
+#' @param path path for figures
+#'
+#' @return
+#' @export
+#'
+experiment_4_output_analysis <- function(output_E4, path) {
+
+  # df <- output_E4 %>%
+  #   dplyr::filter(var != "expected_infection_length")
+  #
+  # summary_E3 <- df %>%
+  #   dplyr::group_by(var) %>%
+  #   dplyr::summarize(
+  #     cover = mean(cover),
+  #     mean_overall = mean(mean),
+  #     mean_sd      = sd(mean)
+  #     )
+  #
+  # df %>%
+  #   ggplot2::ggplot(ggplot2::aes(y = .data$mean)) +
+  #   ggplot2::geom_boxplot() +
+  #   ggplot2::facet_grid(.~.data$var, scales = "free") +
+  #   ggplot2::theme(
+  #     axis.text.x  = ggplot2::element_blank(),
+  #     axis.ticks.x = ggplot2::element_blank()
+  #     )
+
+}

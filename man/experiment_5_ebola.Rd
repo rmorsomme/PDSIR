@@ -8,7 +8,7 @@ experiment_5_ebola(
   I0 = 10,
   theta_0 = list(R0 = 1, gamma = 0.1),
   N = 1e+05,
-  thin = 1,
+  thin = 10,
   rho = 1,
   param = "bg",
   approx = "ldp",

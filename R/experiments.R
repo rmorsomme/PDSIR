@@ -286,10 +286,10 @@ experiment_4_coverage <- function(
 
       SEM <- simulate_SEM(S0, I0, t_end, theta)
       Y   <- observed_data(SEM, K)
-      MC  <- run_DAMCMC(Y, N, rho, theta_0 = theta)
+      MC  <- run_DAMCMC(Y, N, rho, theta_0 = theta, thin = thin)
 
       summary  <- analyze_MCMC(
-        MC, burnin = min(N / 2, 1e4), thin, n_max = NULL,
+        MC, burnin = min(N / 2, 1e4), thin = 1, n_max = NULL,
         iota_dist,
        # plot_id = paste0("E3_S0=", S0, "_rho=", rho),
         save_fig = FALSE,
@@ -344,7 +344,8 @@ experiment_4_output_analysis <- function(output_E4, path) {
     ggplot2::theme(
       axis.text.y  = ggplot2::element_blank(),
       axis.ticks.y = ggplot2::element_blank()
-    )
+    ) +
+    ggplot2::xlab("Posterior Mean")
 
   ggplot2::ggsave(
     "E4_boxplots.jpg",
@@ -367,7 +368,7 @@ experiment_4_output_analysis <- function(output_E4, path) {
 #' @export
 experiment_5_ebola <- function(
   I0 = 1e1, theta_0 = list(R0 = 1, gamma = 1e-1),
-  N = 1e5, thin = 1, rho = 1,
+  N = 1e5, thin = 10, rho = 1,
   param = "bg", approx = "ldp",
   iota_dist = "exponential",
   gener = FALSE, b = 1/2

@@ -180,11 +180,11 @@ experiment_3_acceptance_vs_rho <- function(
 
     for(rho in rhos) {
 
-      MC <- run_DAMCMC(Y, N, rho, theta_0 = theta)
+      MC <- run_DAMCMC(Y, N, rho, theta_0 = theta, thin = thin)
       print(paste0(S0, " - ", rho, ": ", Sys.time()))
 
       summary  <- analyze_MCMC(
-        MC, burnin = min(N / 2, 1e4), thin, n_max = NULL,
+        MC, burnin = min((N/thin) / 2, 1e4), thin = 1, n_max = NULL,
         iota_dist,
         plot_id = paste0("E3_S0=", S0, "_rho=", rho),
         save_fig = FALSE,
@@ -289,7 +289,7 @@ experiment_4_coverage <- function(
       MC  <- run_DAMCMC(Y, N, rho, theta_0 = theta, thin = thin)
 
       summary  <- analyze_MCMC(
-        MC, burnin = min(N / 2, 1e4), thin = 1, n_max = NULL,
+        MC, burnin = min((N / thin) / 2, 1e4), thin = 1, n_max = NULL,
         iota_dist,
        # plot_id = paste0("E3_S0=", S0, "_rho=", rho),
         save_fig = FALSE,

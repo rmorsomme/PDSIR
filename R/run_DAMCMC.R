@@ -19,7 +19,10 @@ run_DAMCMC <- function(
   thin = 1, theta_0,
   print_i = FALSE,  save_SS = FALSE,
   par_prior = list(
-    a_beta = 0.1, b_beta = 1, a_gamma = 1, b_gamma = 1, a_R0 = 2, b_R0 = 1, a_lambda = 1, b_lambda = 1
+    a_beta = 0.01, b_beta = 1,
+    a_gamma = 1, b_gamma = 1,
+    a_R0 = 1, b_R0 = 2,
+    a_lambda = 1, b_lambda = 1
   )
   ) {
 

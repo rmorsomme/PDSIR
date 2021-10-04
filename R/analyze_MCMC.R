@@ -110,8 +110,8 @@ analyze_MCMC <- function(
       {tibble::tibble(
         var  = colnames(.),
         mean = colMeans(.),
-        quant_low = purrr::map_dbl(., stats::quantile, probs = 0.1),
-        quant_upp = purrr::map_dbl(., stats::quantile, probs = 0.9)
+        quant_low = purrr::map_dbl(., stats::quantile, probs = 0.05),
+        quant_upp = purrr::map_dbl(., stats::quantile, probs = 0.95)
       )} %>%
       dplyr::left_join(theta_true_df, by = "var") %>%
       dplyr::mutate(

@@ -5,32 +5,25 @@
 \title{Experiment 4: estimate the coverage rate of the DA-MCMC algorithm}
 \usage{
 experiment_4_coverage(
-  S0s = c(100, 500, 1000),
+  S0 = 100,
   I0 = 10,
-  R0s = c(2, 2.5, 3),
-  gamma = 1,
+  theta = list(R0 = 2, gamma = 1),
   t_end = 6,
   K = 10,
   N = 10000,
   thin = 1,
-  rho = 1,
-  param = "bg",
-  approx = "ldp",
+  rho = 1/3,
   iota_dist = "exponential",
-  gener = FALSE,
-  b = 1/2,
-  theta_0_factor = 1,
-  m = 100
+  m = 100,
+  a
 )
 }
 \arguments{
-\item{S0s}{vector of sizes of initial susceptible population}
+\item{S0}{size of initial susceptible population}
 
 \item{I0}{size initial infectious population}
 
-\item{R0s}{vector of R0's to be used in conjunction with S0s}
-
-\item{gamma}{removal rate}
+\item{theta}{parameters of the SIR process}
 
 \item{t_end}{end of observation period}
 
@@ -42,19 +35,11 @@ experiment_4_coverage(
 
 \item{rho}{proportion of the latent data updated each iteration}
 
-\item{param}{c("bg", "bR"); parameterize the models in terms of (beta, gamma) or (beta, R0)}
-
-\item{approx}{c("poisson", "ldp"); whether to approximate the distribution of the infection times with a poisson process or a linear death process}
-
 \item{iota_dist}{c("exponential", "weibull"); distribution of the infection period}
 
-\item{gener}{logical; whether to use the generalized SIR of Severo (1972)}
-
-\item{b}{parameter of the generalized SIR}
-
-\item{theta_0_factor}{factors by which the true value of the parameters is multiplied to initialize the Markov chain}
-
 \item{m}{number of independent iterations to estimate the coverage rate}
+
+\item{a}{array number}
 }
 \value{
 a tibble summarizing the coverage

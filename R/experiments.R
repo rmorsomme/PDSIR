@@ -253,63 +253,64 @@ experiment_3_output_analysis <- function(output_E3, path) {
 #' @inheritParams experiment_1_proof_of_concept
 #'
 #' @param m number of independent iterations to estimate the coverage rate
+#' @param a array number
 #'
 #' @return a tibble summarizing the coverage
 #' @export
 #'
 experiment_4_coverage <- function(
-  S0s = c(1e2, 5e2, 1e3), I0 = 1e1,
-  R0s = c(2  , 2.5, 3  ), gamma = 1,
+  S0 = 1e2, I0 = 10,
+  theta = list(R0 = 2, gamma = 1),
   t_end = 6, K = 10,
-  N = 1e4, thin = 1, rho = 1,
-  param = "bg", approx = "ldp",
+  N = 1e4, thin = 1, rho = 1/3,
   iota_dist = "exponential",
-  gener = FALSE, b = 1/2,
-  theta_0_factor = 1,
-  m = 1e2
+  m = 1e2, a
 ) {
 
-  stopifnot(length(S0s) == length(R0s))
-
   results <- tibble::tibble(
-    S0 = numeric(), iteration = numeric(),
-    var = numeric(), cover = numeric()
+    S0 = numeric(),
+    a = numeric(), i = numeric(), seed = numeric(),
+    var = numeric(), cover = numeric(), mean = numeric(),
+    T_k = list()
   )
 
-  for(k in 1 : length(S0s)) {
+  theta <- complete_theta(theta, iota_dist, S0)
 
-    # Parameters
-    S0    <- S0s[k]
-    theta <- list(R0 = R0s[k], gamma = gamma)
-    for(i in 1 : m) {
-      print(paste0(S0, " - ", i, "/", m, ": ", Sys.time()))
+  for(i in 1 : m) {
+    seed <- (a - 1) * m + i
+    set.seed(seed)
+    print(paste0("array ", a, " - ", i, "/", m, ": ", Sys.time()))
 
-      SEM <- simulate_SEM(S0, I0, t_end, theta)
-      Y   <- observed_data(SEM, K)
-      MC  <- run_DAMCMC(Y, N, rho, theta_0 = theta, thin = thin)
+    SEM <- simulate_SEM(S0, I0, t_end, theta)
+    Y   <- observed_data(SEM, K)
+    MC  <- run_DAMCMC(Y, N, rho, theta_0 = theta, thin = thin)
 
-      summary  <- analyze_MCMC(
-        MC, burnin = min((N / thin) / 2, 1e4), thin = 1, n_max = NULL,
-        iota_dist,
-       # plot_id = paste0("E3_S0=", S0, "_rho=", rho),
-        save_fig = FALSE,
-        theta_true = theta,
-        Y = Y,
-        coverage = TRUE
-      )
+    summary  <- analyze_MCMC(
+      MC, burnin = min((N / thin) / 2, 1e4), thin = 1, n_max = NULL,
+      iota_dist,
+     # plot_id = paste0("E3_S0=", S0, "_rho=", rho),
+      save_fig = FALSE,
+      theta_true = theta,
+      Y = Y,
+      coverage = TRUE
+    )
 
-      results <- rbind(
-        results,
-        summary[["post_stat"]] %>%
-          dplyr::select(.data$var, .data$cover, .data$mean) %>%
-          dplyr::mutate(iteration = i, S0 = S0) %>%
-          dplyr::select(
-            .data$S0, .data$iteration, .data$var, .data$cover, .data$mean
-            )
-      )
+    results <- rbind(
+      results,
+      summary[["post_stat"]] %>%
+        dplyr::select(.data$var, .data$cover, .data$mean) %>%
+        dplyr::mutate(
+          a = a, i = i, seed = seed, S0 = S0, T_k = list(T_k = Y$T_k)
+          ) %>%
+        dplyr::select(
+          .data$S0,
+          .data$a, .data$i, .data$seed,
+          .data$var, .data$cover, .data$mean,
+          .data$T_k
+          )
+    )
 
-    } # end-for iteration
-  } # end-for S0s
+  } # end-for iteration
 
   return(results)
 

@@ -271,7 +271,7 @@ experiment_4_coverage <- function(
     S0 = numeric(),
     a = numeric(), i = numeric(), seed = numeric(),
     var = numeric(), cover = numeric(), mean = numeric(),
-    T_k = list()
+    T_k = list(), accept = numeric()
   )
 
   theta <- complete_theta(theta, iota_dist, S0)
@@ -300,13 +300,14 @@ experiment_4_coverage <- function(
       summary[["post_stat"]] %>%
         dplyr::select(.data$var, .data$cover, .data$mean) %>%
         dplyr::mutate(
-          a = a, i = i, seed = seed, S0 = S0, T_k = list(T_k = Y$T_k)
+          a = a, i = i, seed = seed, S0 = S0,
+          T_k = list(T_k = Y$T_k), accept = MC$rate_accept
           ) %>%
         dplyr::select(
           .data$S0,
           .data$a, .data$i, .data$seed,
           .data$var, .data$cover, .data$mean,
-          .data$T_k
+          .data$T_k, .data$accept
           )
     )
 

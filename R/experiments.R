@@ -283,7 +283,7 @@ experiment_4_coverage <- function(
 
     SEM <- simulate_SEM(S0, I0, t_end, theta)
     Y   <- observed_data(SEM, K)
-    MC  <- run_DAMCMC(Y, N, rho, theta_0 = theta, thin = thin)
+    MC  <- run_DAMCMC(Y, N, rho, theta_0 = theta, thin = thin, param = "bR")
 
     summary  <- analyze_MCMC(
       MC, burnin = min((N / thin) / 2, 1e4), thin = 1, n_max = NULL,

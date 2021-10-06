@@ -361,9 +361,9 @@ experiment_4_output_analysis <- function(output_E4, path) {
       align = rep("c", ncol(.)+1),
       floating = FALSE,
       digits = matrix(
-        c(2,4,5,
-          2,2,2,
-          2,2,2),
+        c(10,10,2,4,5,
+          10,10,2,2,2,
+          10,10,2,2,2),
         nrow = 3, byrow = TRUE)
     ) %>%
     print(

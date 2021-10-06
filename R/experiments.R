@@ -362,7 +362,7 @@ experiment_4_output_analysis <- function(output_E4, path) {
       floating = FALSE,
       digits = matrix(
         c(2,4,5,
-          2,2,2
+          2,2,2,
           2,2,2),
         nrow = 3, byrow = TRUE)
     ) %>%

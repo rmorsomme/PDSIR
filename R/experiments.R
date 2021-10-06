@@ -259,10 +259,10 @@ experiment_3_output_analysis <- function(output_E3, path) {
 #' @export
 #'
 experiment_4_coverage <- function(
-  S0 = 1e2, I0 = 10,
-  theta = list(R0 = 2, gamma = 1),
+  S0 = 1e3, I0 = 10,
+  theta = list(R0 = 2.5, gamma = 1),
   t_end = 6, K = 10,
-  N = 1e4, thin = 1, rho = 1/3,
+  N = 1e5, thin = 1, rho = 1/10,
   iota_dist = "exponential",
   m = 1e2, a
 ) {

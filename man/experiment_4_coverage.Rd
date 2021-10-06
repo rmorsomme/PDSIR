@@ -5,14 +5,14 @@
 \title{Experiment 4: estimate the coverage rate of the DA-MCMC algorithm}
 \usage{
 experiment_4_coverage(
-  S0 = 100,
+  S0 = 1000,
   I0 = 10,
-  theta = list(R0 = 2, gamma = 1),
+  theta = list(R0 = 2.5, gamma = 1),
   t_end = 6,
   K = 10,
-  N = 10000,
+  N = 1e+05,
   thin = 1,
-  rho = 1/3,
+  rho = 1/10,
   iota_dist = "exponential",
   m = 100,
   a

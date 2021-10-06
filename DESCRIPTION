@@ -30,7 +30,8 @@ Imports:
     rlang,
     stats,
     tibble,
-    tidyr
+    tidyr,
+    xtable
 Suggests: 
     grDevices,
     emdbook,

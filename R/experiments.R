@@ -367,7 +367,7 @@ experiment_4_output_analysis <- function(output_E4, path) {
         nrow = 3, byrow = TRUE)
     ) %>%
     print(
-      file = paste0(path, "coverage_posteriormean.tex"),
+      file = paste0(path, "/coverage_posteriormean.tex"),
       type = "latex",
       booktab = TRUE
       )

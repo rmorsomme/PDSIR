@@ -359,7 +359,12 @@ experiment_4_output_analysis <- function(output_E4, path) {
       caption = "Nomial coverage rate and distribution of posterior means among 2000 simulations. The true value of the parameters are (beta, gamma, R_0) = (0.0025, 1, 2.5)",
       label = paste0("tab:cov"),
       align = rep("c", ncol(.)+1),
-      floating = FALSE, digits = 5
+      floating = FALSE,
+      digits = matrix(
+        c(2,4,5,
+          2,2,2
+          2,2,2),
+        nrow = 3, byrow = TRUE)
     ) %>%
     print(
       file = paste0(path, "coverage_posteriormean.tex"),

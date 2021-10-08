@@ -70,7 +70,7 @@ experiment_1_proof_of_concept <- function(
 #'
 experiment_1_output_analysis <- function(
   x, iota_dist = "exponential", theta_true,
-  burnin = 0, thin = 1, n_max = NULL,
+  burnin = NULL, thin = 1, n_max = NULL,
   plot_id = NULL, path = NULL, save_fig = TRUE
   ) {
 
@@ -84,7 +84,7 @@ experiment_1_output_analysis <- function(
     theta_true = theta, Y = Y, save_fig = save_fig
     )
 
-  if(is.null(burnin))  burnin <- length(MC[["theta"]])/2
+  if(is.null(burnin))  burnin <- length(MC[["theta"]]) / 2
   summary_burn <- analyze_MCMC(
     MC, burnin, thin, n_max, iota_dist,
     plot_id = paste0(plot_id, "_burn"), path = path,
@@ -471,4 +471,39 @@ experiment_5_output <- function(
 
 }
 
+#' Experiment 6 - Single-site updates
+#'
+#' @inheritParams experiment_1_proof_of_concept
+#'
+#' @return
+#' @export
+#'
+expriment_6_single_site_update <- function(
+  S0 = 1e3, I0 = 1e1, theta = list(R0 = 2.5, lambda = 1, shape = 1, gamma = 1),
+  t_end = 6, K = 10,
+  N = 1e6, thin = 1,
+  param = "bR", approx = "ldp",
+  iota_dist = "exponential",
+  gener = FALSE, b = 1/2,
+  path = NULL, plot_id, save_fig = TRUE
+) {
 
+  theta <- complete_theta(theta, iota_dist, S0)
+
+  # Observed data
+  SIR   <- simulate_SEM(S0, I0, t_end, theta, iota_dist, gener, b)
+  if(save_fig)  draw_trajectories(SIR, plot_id, path, t_end)
+  Y     <- observed_data(SIR, K)
+
+  # DA-MCMC with single-site updates
+  rho <- 1 / (sum(Y[["T_k"]]) + I0)
+  MC <- run_DAMCMC(
+    Y, N,
+    rho, param, approx,
+    iota_dist, gener, b,
+    thin, theta_0 = theta
+  )
+
+  return(list(theta = theta, Y = Y, MC = MC, SIR = SIR, rho = rho))
+
+}

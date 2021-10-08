@@ -8,7 +8,7 @@ experiment_1_output_analysis(
   x,
   iota_dist = "exponential",
   theta_true,
-  burnin = 0,
+  burnin = NULL,
   thin = 1,
   n_max = NULL,
   plot_id = NULL,

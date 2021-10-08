@@ -478,7 +478,7 @@ experiment_5_output <- function(
 #' @return
 #' @export
 #'
-expriment_6_single_site_update <- function(
+experiment_6_single_site_update <- function(
   S0 = 1e3, I0 = 1e1, theta = list(R0 = 2.5, lambda = 1, shape = 1, gamma = 1),
   t_end = 6, K = 10,
   N = 1e6, thin = 1,

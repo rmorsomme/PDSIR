@@ -54,7 +54,7 @@ experiment_6_single_site_update(
 \item{save_fig}{logical; whether to save the figures generated}
 }
 \value{
-
+list containing the parameters, observed data, Markov chain and run time of the algorithm
 }
 \description{
 Experiment 6 - Single-site updates

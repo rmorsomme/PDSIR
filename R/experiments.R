@@ -475,7 +475,7 @@ experiment_5_output <- function(
 #'
 #' @inheritParams experiment_1_proof_of_concept
 #'
-#' @return
+#' @return list containing the parameters, observed data, Markov chain and run time of the algorithm
 #' @export
 #'
 experiment_6_single_site_update <- function(

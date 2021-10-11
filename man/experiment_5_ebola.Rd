@@ -14,7 +14,8 @@ experiment_5_ebola(
   approx = "ldp",
   iota_dist = "exponential",
   gener = FALSE,
-  b = 1/2
+  b = 1/2,
+  path_data = "Input/Ebola/Guinea_modified.csv"
 )
 }
 \arguments{
@@ -37,6 +38,8 @@ experiment_5_ebola(
 \item{gener}{logical; whether to use the generalized SIR of Severo (1972)}
 
 \item{b}{parameter of the generalized SIR}
+
+\item{path_data}{path to the data file}
 }
 \value{
 list containing the parameters, observed data, Markov chain and run time of the algorithm

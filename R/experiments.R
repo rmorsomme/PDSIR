@@ -379,6 +379,7 @@ experiment_4_output_analysis <- function(output_E4, path) {
 #' @inheritParams experiment_1_proof_of_concept
 #'
 #' @param theta_0 intial parameter values
+#' @param path_data path to the data file
 #'
 #' @return list containing the parameters, observed data, Markov chain and run time of the algorithm
 #' @export
@@ -387,14 +388,15 @@ experiment_5_ebola <- function(
   N = 1e5, thin = 10, rho = 1,
   param = "bg", approx = "ldp",
   iota_dist = "exponential",
-  gener = FALSE, b = 1/2
+  gener = FALSE, b = 1/2,
+  path_data = "Input/Ebola/Guinea_modified.csv"
 ) {
 
   #
   # Ebola Data
 
   d <- readr::read_csv(
-    "../test/Data/Ebola/Guinea_modified.csv",
+    path_data,
     col_types = readr::cols(
       .default            = readr::col_double(),
       Location            = readr::col_character(),
@@ -455,7 +457,7 @@ experiment_5_ebola <- function(
 #'
 experiment_5_output <- function(
   output_E5, iota_dist = "exponential", path, plot_id = "E5",
-  burnin = 5e4, thin = 1, n_max = NULL
+  burnin = 0, thin = 1, n_max = NULL
   ) {
 
   MC <- output_E5[["MC"]]

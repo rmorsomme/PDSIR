@@ -9,7 +9,7 @@ experiment_5_output(
   iota_dist = "exponential",
   path,
   plot_id = "E5",
-  burnin = 50000,
+  burnin = 0,
   thin = 1,
   n_max = NULL
 )

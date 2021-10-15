@@ -4,12 +4,12 @@
 \alias{remove_burnin}
 \title{Removes the iterations of the transient phase of a Markov chain}
 \usage{
-remove_burnin(df, b = 0)
+remove_burnin(df, burnin = 0)
 }
 \arguments{
 \item{df}{data frame}
 
-\item{b}{number of iterations to remove as burnin}
+\item{burnin}{number of iterations to remove as burnin}
 }
 \value{
 data frame without the burnin iterations

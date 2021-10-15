@@ -9,7 +9,6 @@ experiment_1_output_analysis(
   iota_dist = "exponential",
   theta_true,
   burnin = NULL,
-  thin = 1,
   n_max = NULL,
   plot_id = NULL,
   path = NULL,
@@ -24,8 +23,6 @@ experiment_1_output_analysis(
 \item{theta_true}{true value of the parameters}
 
 \item{burnin}{number of iterations to discard, the default value NULL will discard half of the draws.}
-
-\item{thin}{thinning parameter for the Markov chain}
 
 \item{n_max}{last draw to take into account}
 

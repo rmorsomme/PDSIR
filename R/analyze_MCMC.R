@@ -5,7 +5,6 @@
 #' @inheritParams experiment_1_output_analysis
 #'
 #' @param MC output of the MCMC algorithm
-#' @param thin thinning argument for the iterations of the Markov chain
 #' @param do_SS logical; whether to analyze the summary statistics in addition to the parameters
 #' @param theta_true true value of the parameters
 #' @param coverage whether to determine if the credible intervals contain the true value of the parameters
@@ -17,7 +16,7 @@
 #' @export
 #'
 analyze_MCMC <- function(
-  MC, burnin = 0, thin = 1, n_max = NULL, iota_dist,
+  MC, burnin = 0, thin, n_max = NULL, iota_dist,
   plot_id = NULL, path = NULL, save_fig = TRUE, do_SS = FALSE,
   theta_true, Y, coverage = TRUE
   ) {
@@ -33,15 +32,14 @@ analyze_MCMC <- function(
 
   S0            <- Y [["S0"         ]]
 
-  if(is.null(n_max)) n_max <- length(theta)
+  if(is.null(n_max)) n_max <- length(theta) * thin
 
   # Data Wrangling
   theta_tidy <- data.table::rbindlist(theta) %>%
-    add_iteration %>%
+    add_iteration(thin) %>%
     dplyr::mutate(loglik = loglik) %>%
-    dplyr::filter(.data$Iteration < n_max) %>%
+    dplyr::filter(.data$Iteration <= n_max) %>%
     remove_burnin(burnin) %>%
-    dplyr::filter(.data$Iteration %% thin == 0) %>%
     dplyr::mutate(expected_infection_length = 1 / gamma)
 
   if(do_SS) {

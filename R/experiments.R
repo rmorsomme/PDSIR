@@ -50,7 +50,7 @@ experiment_1_proof_of_concept <- function(
     thin, theta_0
     )
 
-  return(list(theta = theta, Y = Y, MC = MC, SIR = SIR))
+  return(list(theta = theta, Y = Y, MC = MC, SIR = SIR, thin = thin))
 
 }
 
@@ -70,13 +70,14 @@ experiment_1_proof_of_concept <- function(
 #'
 experiment_1_output_analysis <- function(
   x, iota_dist = "exponential", theta_true,
-  burnin = NULL, thin = 1, n_max = NULL,
+  burnin = NULL, n_max = NULL,
   plot_id = NULL, path = NULL, save_fig = TRUE
   ) {
 
   theta <- x[["theta"]]
   MC    <- x[["MC"   ]]
   Y     <- x[["Y"    ]]
+  thin  <- x[["thin" ]]
 
   summary_no_burn <- analyze_MCMC(
     MC, burnin = 0, thin, n_max, iota_dist,

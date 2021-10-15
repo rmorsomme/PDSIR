@@ -7,7 +7,7 @@
 analyze_MCMC(
   MC,
   burnin = 0,
-  thin = 1,
+  thin,
   n_max = NULL,
   iota_dist,
   plot_id = NULL,
@@ -24,7 +24,7 @@ analyze_MCMC(
 
 \item{burnin}{number of iterations to discard, the default value NULL will discard half of the draws.}
 
-\item{thin}{thinning argument for the iterations of the Markov chain}
+\item{thin}{thinning parameter for the Markov chain}
 
 \item{n_max}{last draw to take into account}
 

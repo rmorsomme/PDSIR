@@ -4,10 +4,12 @@
 \alias{add_iteration}
 \title{Add an "Iteration" column to a data frame}
 \usage{
-add_iteration(df)
+add_iteration(df, thin)
 }
 \arguments{
 \item{df}{data frame}
+
+\item{thin}{thinning parameter for the Markov chain}
 }
 \value{
 data frame with a variable for iteration

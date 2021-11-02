@@ -5,11 +5,11 @@
 \title{Infection dynamics in the SIR and the PD-SIR processes.}
 \usage{
 draw_mu(
-  theta = list(R0 = 2, gamma = 1),
+  theta = list(R0 = 2, gamma = 10/2),
   S0 = 10,
   I0 = 2,
-  t_end = 3,
-  K = 5,
+  t_end = 0.6,
+  K = 3,
   iota_dist = "exponential",
   gener = FALSE,
   b = 1,

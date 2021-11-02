@@ -385,7 +385,7 @@ experiment_4_output_analysis <- function(output_E4, path) {
 #' @return list containing the parameters, observed data, Markov chain and run time of the algorithm
 #' @export
 experiment_5_ebola <- function(
-  I0 = 1e1, theta_0 = list(R0 = 1, gamma = 1e-1),
+  I0 = 5, theta_0 = list(R0 = 1, gamma = 1e-1),
   N = 1e5, thin = 10, rho = 1,
   param = "bg", approx = "ldp",
   iota_dist = "exponential",

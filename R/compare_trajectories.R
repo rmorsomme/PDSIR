@@ -45,7 +45,10 @@ compare_trajectories <- function(SIR_SI, PDSIR_SI, plot_id = NULL, path, t_end){
     )) +
     ggplot2::geom_line(data = SIR, alpha = 0.25, color = "black", size = 1.25) +
     ggplot2::geom_line(data = PD_SIR, size = 1.25) +
-    ggplot2::theme(text = ggplot2::element_text(size = 30))
+    ggplot2::theme(
+      text = ggplot2::element_text(size = 30),
+      legend.position = "none"
+      )
 
   ggplot2::ggsave(
     paste0(plot_id, ".jpeg"),

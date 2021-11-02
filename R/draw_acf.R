@@ -8,7 +8,7 @@
 #' @return Barplot of the ACF
 #' @export
 #'
-draw_acf <- function(df, var, plot_id, path = NULL, lag_max = 1.5e3) {
+draw_acf <- function(df, var, plot_id, path = NULL, lag_max = 500) {
 
   x     <- dplyr::pull(df, .data[[var]])
   x_acf <- stats::acf(x, lag.max = lag_max, plot = FALSE)

@@ -5,7 +5,7 @@
 \title{Experiment 5: Analysis of the Ebola data}
 \usage{
 experiment_5_ebola(
-  I0 = 10,
+  I0 = 5,
   theta_0 = list(R0 = 1, gamma = 0.1),
   N = 1e+05,
   thin = 10,

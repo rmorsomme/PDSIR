@@ -19,7 +19,10 @@ draw_E3 <- function(results, path, var, lab_y, plot_id) {
     ggplot2::geom_line() +
     ggplot2::labs(y = lab_y, x = expression(rho)) +
     ggplot2::expand_limits(y = 0) +
-    ggplot2::theme(text = ggplot2::element_text(size = 20))
+    ggplot2::theme(
+      text = ggplot2::element_text(size = 20),
+      legend.position = "none"
+      )
 
   ggplot2::ggsave(
     paste0("E3_", plot_id, ".jpg"),
@@ -44,7 +47,8 @@ draw_E3_facet <- function(results, path, var, lab_y, plot_id) {
     ggplot2::labs(y = lab_y, x = expression(rho)) +
     ggplot2::expand_limits(y = 0) +
     ggplot2::theme(text = ggplot2::element_text(size = 20)) +
-    ggplot2::facet_grid(S0 ~ ., labeller = ggplot2::label_both, scales = "free")
+    ggplot2::facet_grid(S0 ~ ., labeller = ggplot2::label_both, scales = "free") +
+    ggplot2::theme(strip.text.x = ggplot2::element_blank())
 
   ggplot2::ggsave(
     paste0("E3_facet_", plot_id, ".jpg"),

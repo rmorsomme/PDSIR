@@ -507,6 +507,6 @@ experiment_6_single_site_update <- function(
     thin, theta_0 = theta
   )
 
-  return(list(theta = theta, Y = Y, MC = MC, SIR = SIR, rho = rho))
+  return(list(theta = theta, Y = Y, MC = MC, SIR = SIR, thin = thin, rho = rho))
 
 }

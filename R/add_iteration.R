@@ -11,7 +11,6 @@
 #'
 add_iteration <- function(df, thin) {
 
-
   stopifnot(is.data.frame(df))
 
   n  <- nrow(df)

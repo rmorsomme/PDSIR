@@ -16,7 +16,7 @@ draw_traceplot <- function(df, var, plot_id, path = NULL) {
     ggplot2::geom_line() +
     ylab("1/gamma") + # quick and dirty
     ggplot2::theme(
-      text = ggplot2::element_text(size = 40),
+      text = ggplot2::element_text(size = 25),
       axis.text.x = ggplot2::element_text(size = 25)
       )
 

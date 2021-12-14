@@ -239,12 +239,12 @@ experiment_3_output_analysis <- function(output_E3, path) {
   # Mixing
   draw_E3(results, path, "accept_rate" , "Acceptance Rate"  , "accept"     )
   draw_E3(results, path, "run_time"    , "Run Time"         , "runtime"    )
-  draw_E3_facet(results, path, "ESS_beta"    , "ESS for beta"     , "ESSbeta"    )
-  draw_E3_facet(results, path, "ESS_gamma"   , "ESS for gamma"    , "ESSgamma"   )
-  draw_E3_facet(results, path, "ESS_R0"      , "ESS for R0"       , "ESSR0"      )
-  draw_E3_facet(results, path, "ESSsec_beta" , "ESS/sec for beta" , "ESSsecbeta" )
-  draw_E3_facet(results, path, "ESSsec_gamma", "ESS/sec for gamma", "ESSsecgamma")
-  draw_E3_facet(results, path, "ESSsec_R0"   , "ESS/sec for R0"   , "ESSsecR0"   )
+  draw_E3_facet(results, path, "ESS_beta"    , "ESS"     , "ESSbeta"    )
+  draw_E3_facet(results, path, "ESS_gamma"   , "ESS"    , "ESSgamma"   )
+  draw_E3_facet(results, path, "ESS_R0"      , "ESS"       , "ESSR0"      )
+  draw_E3_facet(results, path, "ESSsec_beta" , "ESS/sec" , "ESSsecbeta" )
+  draw_E3_facet(results, path, "ESSsec_gamma", "ESS/sec", "ESSsecgamma")
+  draw_E3_facet(results, path, "ESSsec_R0"   , "ESS/sec"   , "ESSsecR0"   )
 
 }
 

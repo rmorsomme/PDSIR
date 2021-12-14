@@ -34,11 +34,14 @@ draw_trajectories <- function(
     dplyr::mutate(Compartments = factor(.data$Compartments, levels = c("S", "E", "I", "R"))) %>%
     ggplot2::ggplot(ggplot2::aes(.data$t, .data$count, color = .data$Compartments)) +
     ggplot2::geom_line(size = 1.5) +
-    ggplot2::theme(text = ggplot2::element_text(size = 25))
+    ggplot2::theme(
+      text = ggplot2::element_text(size = 25),
+      legend.position = "none"
+      )
 
   ggplot2::ggsave(
     paste0(plot_id, "_trajectories.jpeg"),
-    path = path, width = 1.5 * 1.61803, height = 1, scale = 5
+    path = path, width = 1.61803, height = 1, scale = 5
   )
 
 }

@@ -37,7 +37,8 @@ draw_mu <- function(
       xintercept = SIR$t[SIR$X == "j"], col = "blue", alpha = 0.4, linetype = 3, size = 1
     ) +
     ggplot2::xlim(0, t_end) +
-    ggplot2::labs(y = "Infection rate")
+    ggplot2::labs(y = "Infection rate") +
+    ggplot2::theme(text = ggplot2::element_text(size = 20))
 
   ggplot2::ggsave(
     "infection_rate_SIR_PDSIR.jpg",

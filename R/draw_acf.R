@@ -17,7 +17,7 @@ draw_acf <- function(df, var, plot_id, path = NULL, lag_max = 200) {
   g <- df %>%
     ggplot2::ggplot(ggplot2::aes(.data$Lag, .data$ACF)) +
     ggplot2::geom_col(width = .25) +
-    ggplot2::theme(text = ggplot2::element_text(size = 30))
+    ggplot2::theme(text = ggplot2::element_text(size = 40))
 
   ggplot2::ggsave(
     paste(plot_id, var, "acf.jpg", sep = "_"),

@@ -16,7 +16,7 @@ draw_traceplot <- function(df, var, plot_id, path = NULL) {
     ggplot2::geom_line() +
     ggplot2::theme(
       text = ggplot2::element_text(size = 40),
-      axis.text.x = ggplot2::element_text(size = 30)
+      axis.text.x = ggplot2::element_text(size = 25)
       )
 
   ggplot2::ggsave(

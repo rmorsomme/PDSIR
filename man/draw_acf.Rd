@@ -4,7 +4,7 @@
 \alias{draw_acf}
 \title{Generate a plot of the auto-correlation function}
 \usage{
-draw_acf(df, var, plot_id, path = NULL, lag_max = 500)
+draw_acf(df, var, plot_id, path = NULL, lag_max = 200)
 }
 \arguments{
 \item{df}{data frame}

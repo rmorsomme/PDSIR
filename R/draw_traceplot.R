@@ -14,7 +14,6 @@ draw_traceplot <- function(df, var, plot_id, path = NULL) {
   g <- df %>%
     ggplot2::ggplot(ggplot2::aes(x = .data$Iteration, y = .data[[var]])) +
     ggplot2::geom_line() +
-    ylab("1/gamma") + # quick and dirty
     ggplot2::theme(
       text = ggplot2::element_text(size = 25),
       axis.text.x = ggplot2::element_text(size = 25)
